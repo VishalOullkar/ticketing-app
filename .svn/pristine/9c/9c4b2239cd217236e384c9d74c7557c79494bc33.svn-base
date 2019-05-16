@@ -1,0 +1,37 @@
+<ngx-smart-modal #popupOne [identifier]="'popupOne'">
+
+  <form #formdata="ngForm" (ngSubmit)="updateStatus(formdata)">
+    <h3>Response to incident</h3>
+    <p>Do you resolved or want to reponse this incident.</p>
+
+    <div class="radio">
+      <input type="radio" name="status" (change)="checkStatus('Resolve')" [(ngModel)]="raiseTicketService.SelectedIncident.Status" value="Resolved"  />Resolve
+      <input type="radio" name="status" (change)="checkStatus('Response')" [(ngModel)]="raiseTicketService.SelectedIncident.Status" value="Response"/>Response
+    </div>
+
+    <div class="form-group" *ngIf="isResove">
+      <textarea name="ResolveDescription" #ResolveDescription="ngModel" [(ngModel)]="raiseTicketService.SelectedIncident.ResolveDescription" class="form-control" placeholder="Write Resolve comment"></textarea>
+      <input name="IncidentId" #IncidentId="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentId"  class="form-control" />
+      <input name="IncidentCode" #IncidentCode="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentCode"  class="form-control" />
+      <input name="RaisedBy" #RaisedBy="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.RaisedBy"  class="form-control" />
+
+    </div>
+    <div class="form-group" *ngIf="isResponse">
+      <textarea name="ResponseDescription" #ResponseDescription="ngModel" [(ngModel)]="raiseTicketService.SelectedIncident.ResponseDescription" class="form-control" placeholder="Write Response comment"></textarea>
+
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <button type="submit" class="btn btn-sm btn-block btn-success">Save</button>
+
+        <!--<button (click)="popupOne.close()" class="btn btn-sm btn-block btn-danger">Close</button>-->
+
+      </div>
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+      </div>
+    </div>
+    </form>
+</ngx-smart-modal>
+

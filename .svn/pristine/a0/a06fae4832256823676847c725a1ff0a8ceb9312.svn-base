@@ -1,0 +1,67 @@
+import { Component, OnInit } from '@angular/core';
+import { RaiseTicketService } from '../Shared/raise-ticket.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Incident } from '../Models/incident';
+import { map } from 'rxjs/operators';
+import { NgxSmartModalService } from 'ngx-smart-modal';
+import { NgForm } from '@angular/forms';
+import { Guid } from 'guid-typescript';
+
+@Component({
+  selector: 'app-incident-support',
+  templateUrl: './incident-support.component.html',
+  styleUrls: ['./incident-support.component.css']
+})
+export class IncidentSupportComponent implements OnInit {
+
+  //searchTerm: string;
+  config: any;
+  IncidentModel: Incident;
+  constructor(private raiseTicketService: RaiseTicketService, public ngxSmartModalService: NgxSmartModalService,
+    private route: ActivatedRoute, private router: Router) {
+    this.config = {
+      currentPage: 1,
+      itemsPerPage: 10
+    };
+    this.route.queryParamMap
+      .pipe(map(p => p.get('page')))
+      .subscribe(page => this.config.currentPage = page);
+  }
+
+  pageChangeMethod(newPage: number) {
+    this.router.navigate(['incidentSupport'], { queryParams: { page: newPage } });
+
+  }
+  onChange(number: any)
+  {
+   
+  }
+    getIncidentByID(ID:Guid)
+    {
+    this.raiseTicketService.getIncidentDetailsById(ID)
+        .subscribe(data => this.raiseTicketService.SelectedIncident = data);
+      this.ngxSmartModalService.getModal('popupOne').open();
+
+  }
+
+
+  ShowOrEdit(Incidents: Incident) {
+    //this.raiseTicketService.incidentId = ID;
+    this.raiseTicketService.SelectedIncident = Object.assign({}, Incidents);
+
+    console.log(this.raiseTicketService.SelectedIncident);
+    //this.parentEvent.emit("Message from parent")
+    // this.incidentId = Id;
+    //this.router.navigate(['/editRaisedTicket'])
+    //  console.warn(this.IncidentModel);
+  }
+
+
+  ngOnInit() {
+
+    this.raiseTicketService.getincidentList().subscribe(data => this.raiseTicketService.IncidentList = data);
+    //this.raiseTicketService.SelectedIncident.IncidentCode
+
+  }
+
+}

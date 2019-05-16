@@ -1,0 +1,210 @@
+<!--<app-nav-menu></app-nav-menu>
+
+<div class="radio">
+  <input type="radio" (change)="onChange('All')" value="All" name="status"  checked="checked" />All
+  <input type="radio" (change)="onChange('Outstanding')" value="Outstanding" name="status" />Outstanding
+  <input type="radio" (change)="onChange('Response')" value="Response" name="status" />Response
+  <input type="radio" (change)="onChange('Resolved')" value="Resolved" name="status" />Resolved
+  <input type="radio" (change)="onChange('Confirm')" value="Confirm" name="status" />Confirm
+</div>
+<br/>
+<div class="card border-primary mb-3 text-center">
+
+
+  <div class="card-body">
+    <blockquote class="card-blockquote">
+      <div class="row">
+        <div class="col-md-2">
+          <p style="text-align:center" class="h4 mb-1">Incidents</p>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-8">
+
+              <input type="text" style="width:200px;" placeholder="Search by incident code" class="form-control" [(ngModel)]="searchTerm" />
+
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-sm btn-block btn-danger" routerLink='' type="submit"><i class="btn btn-sm"></i>Exit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </blockquote>
+  </div>
+</div>
+
+<div class="card border-warning mb-3 text-center">
+  <div class="card-body">
+    <blockquote class="card-blockquote">
+
+
+        <div class="row">
+
+          <div class="col-md-1">
+
+          </div>
+          <div class="col-md-10">
+            <table class="table table-striped table-hover">
+
+              <thead class="thead-dark">
+                <tr>
+                  <th></th>
+                  <th>Incident Code</th>
+                  <th>Module Name</th>
+                  <th>Priority</th>
+                  <th>Raised Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let raiseTicketList of raiseTicketService.IncidentList|paginate:config|searchIncidents:searchTerm">
+
+
+                  <td><button class="btn btn-success btn-sm btn-circle" (click)="getIncidentByID(raiseTicketList.IncidentId)"><i class="fa fa-pencil square-o"></i></button></td>
+
+
+                  <td>{{raiseTicketList.IncidentCode}}</td>
+                  <td>{{raiseTicketList.ModuleName}}</td>
+                  <td>{{raiseTicketList.Priority}}</td>
+                  <td>{{raiseTicketList.RaisedDateTime|date:"dd-MMM-yyyy"}}</td>
+                  <td>{{raiseTicketList.Status}}</td>
+
+                </tr>
+
+              </tbody>
+
+
+            </table>
+          </div>
+          <div class="col-md-1">
+
+          </div>
+
+        </div>
+
+
+
+      <pagination-controls (pageChange)="pageChangeMethod($event)"></pagination-controls>
+
+
+    </blockquote>
+  </div>
+</div>
+<app-incident-support-model></app-incident-support-model>-->
+<!--<app-nav-menu></app-nav-menu>-->
+
+
+
+<br />
+
+<div class="card">
+  <div class="card-header" style="background-color:darkblue">
+    <b style="font-weight:bold;font-family:Arial;color:white">  Incidents</b>
+    <div class="btn-group pull-right">
+
+
+      <button class="btn btn-danger" routerLink='' style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height: 15px;width:100px;font-size: 13px">Exit</button>
+
+    </div>
+
+  </div>
+
+
+  <div class="card-body">
+    <nav class="navbar navbar navbar-dark bg-primary">
+
+
+      <div class="radio">
+        <input type="radio" (change)="onChange('All')" value="All" name="status" checked="checked" />All
+        <input type="radio" (change)="onChange('Outstanding')" value="Outstanding" name="status" />Outstanding
+        <input type="radio" (change)="onChange('Response')" value="Response" name="status" />Response
+        <input type="radio" (change)="onChange('Resolved')" value="Resolved" name="status" />Resolved
+        <input type="radio" (change)="onChange('Confirm')" value="Confirm" name="status" />Confirm
+      </div>
+      <!--<input class="form-control mr-sm-2" type="search" placeholder="Search by incident code" aria-label="Search" [(ngModel)]="searchTerm">-->
+
+      <div class="form-group has-search">
+        <span class="fa fa-search form-control-feedback"></span>
+        <input type="text" style="width:250px;" placeholder="Search by incident code" class="form-control" [(ngModel)]="searchTerm" />
+
+      </div>
+
+
+
+
+    </nav>
+
+
+
+    <table class="table table-striped table-hover">
+
+      <thead class="bg-light">
+
+        <tr>
+          <th></th>
+          <th>Incident Code</th>
+          <th>Module Name</th>
+          <th>Priority</th>
+          <th>Raised Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let raiseTicketList of raiseTicketService.IncidentList|searchIncidents:searchTerm|paginate:config"  >
+
+          <td><button class="btn btn-success btn-sm btn-circle" (click)="getIncidentByID(raiseTicketList.IncidentId)"><i class="fa fa-pencil square-o"></i></button></td>
+
+
+          <td>{{raiseTicketList.IncidentCode}}</td>
+          <td>{{raiseTicketList.ModuleName}}</td>
+          <td>{{raiseTicketList.Priority}}</td>
+          <td>{{raiseTicketList.RaisedDateTime|date:"dd-MMM-yyyy"}}</td>
+          <td>{{raiseTicketList.Status}}</td>
+
+        </tr>
+        <tr >
+          <td colspan="6" *ngIf="(raiseTicketService.IncidentList|searchIncidents:searchTerm).length==0"  style="text-align:center"><b style="color:red;text-align:center">No Record Found</b></td>
+        </tr>
+      </tbody>
+
+
+    </table>
+
+    <footer style="text-align:center">
+      <pagination-controls (pageChange)="pageChangeMethod($event)" *ngIf="raiseTicketService.IncidentList.length > 0"></pagination-controls>
+    </footer>
+
+  </div>
+
+
+</div>
+
+<style type="text/css">
+
+
+  /* Bootstrap 4 text input with search icon */
+
+  /*.has-search .form-control {
+    padding-left: 2.375rem;
+  }*/
+
+  .has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 28.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+  }
+</style>
+
+<app-incident-support-model></app-incident-support-model>

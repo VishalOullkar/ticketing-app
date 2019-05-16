@@ -1,0 +1,11 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=45.114.245.80;Initial Catalog=MITRPLUSARC_TEST;Persist Security Info=True;User ID=MITRAdmin;Password=MITRAdmin@123"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Warning"
+    }
+  },
+  "AllowedHosts": "*"
+}

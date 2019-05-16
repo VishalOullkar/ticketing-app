@@ -1,0 +1,65 @@
+<app-nav-menu></app-nav-menu>
+
+<br />
+<div class="row">
+
+  <div class="col-md-1">
+  </div>
+
+  <div class="col-md-3">
+    <h2 class="text-center">Add User</h2>
+    <form [formGroup]="userGroup" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="Username">User ID:</label>
+        <input type="text" formControlName="Username" placeholder="User ID" name="Username" class="form-control">
+        <input type="hidden" formControlName="Userid" placeholder="User ID" name="Userid" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email address:</label>
+        <input type="email" formControlName="EmailId" placeholder="Email" name="EmailId" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="Password">Password:</label>
+        <input formControlName="Password" placeholder="Password" name="Password" class="form-control">
+      </div>
+
+      <button type="submit" class="btn btn-success">Save</button>
+    </form>
+  </div>
+
+  <div class="col-md-2">
+  </div>
+
+
+  <div class="col-md-6">
+    <h2> User Details</h2>
+    <button class="btn btn-danger" (click)="addUser()"> Add User</button>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>User Name</th>
+          <th>Email</th>
+          <th>Password</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userService.userList">
+
+          <td>{{user.Username}}</td>
+          <td>{{user.EmailId}}</td>
+          <td>{{user.Password}}</td>
+
+          <td></td>
+          <td>
+            <button class="text-danger" (click)="deleteUser(user.Userid)"> <i class="fa fa-trash-o"></i></button>
+            <button class="btn-success" (click)="editUser(user)" style="margin-left: 20px;"> <i class="fa fa-pencil"></i></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+

@@ -1,0 +1,51 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
+})
+export class LoginComponent implements OnInit {
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+  }
+  msg: string;
+
+
+  OnSubmit(userName, password) {
+    console.log(userName)
+    console.log(password)
+
+    if ((userName.trim() == "" && password.trim() == "")) {
+      this.msg = "Please enter the username or Password"
+      console.warn(this.msg);
+    }
+    else if ((userName.trim() == "vishal" && password.trim() == "123")) {
+      this.router.navigate(['/incidentSupport'])
+      console.warn('Welcome to application');
+    }
+    else if ((userName.trim() == "admin" && password.trim() == "123")) {
+      this.router.navigate(['/incidentSupport'])
+      console.warn('Welcome to application');
+    }
+    else {
+      this.msg = "Invalid username or password"
+      console.warn('Invalid username or password');
+    }
+
+    //this.userService.userAuthentication(userName, password).subscribe((data: any) => {
+    //  localStorage.setItem('userToken', data.access_token);
+    ////if (userName == 'vishal' && password == '123') {
+    //  this.router.navigate(['/home']);
+    ////}
+    //},
+    //  (err: HttpErrorResponse) => {
+    //    this.isLoginError = true;
+    //  });
+    //}
+
+  }
+
+}

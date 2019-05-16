@@ -1,0 +1,78 @@
+
+<body style="background-color:cornsilk;height:640px">
+  <form #loginForm="ngForm" class="col s12 white" (ngSubmit)="OnSubmit(UserName.value,Password.value)">
+    <!--<div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">account_circle</i>
+        <input type="text" #UserName ngModel name="UserName" placeholder="Username" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">vpn_key</i>
+        <input type="password" #Password ngModel name="Password" placeholder="Password" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <button [disabled]="!loginForm.valid" class="btn-large btn-submit" type="submit">Login</button>
+      </div>
+    </div>-->
+    <!--<div class="row">-->
+    <fieldset>
+      <!--<legend>Login</legend>-->
+
+
+
+
+      <div class="loginbox" style="padding-top:120px;">
+
+        <div class="logincontrols">
+
+          <h2 style="text-align:center">Login</h2>
+          <div class="row">
+            <div class="col-lg-4"> </div>
+            <div class="col-lg-4">
+              <input type="text" #UserName ngModel name="UserName" class="form-control" placeholder="Username" required>
+            </div>
+            <div class="col-lg-4">  </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col-lg-4">  </div>
+            <div class="col-lg-4">
+              <input type="password" #Password ngModel name="Password" class="form-control" placeholder="Password" required>
+            </div>
+            <div class="col-lg-4">  </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">  </div>
+            <div class="col-lg-2">
+              <button class="btn-large btn-submit" style="background-color:forestgreen" type="submit">Login</button>
+
+            </div>
+            <!--<div class="col-lg-2">
+              <button class="btn-large btn-submit" style="background-color:orange" routerLink="/register" type="submit">SignUp</button>
+
+            </div>-->
+
+            <div class="col-lg-5">  </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4">  </div>
+
+            <h3 style="color:red">{{msg}}</h3>
+          </div>
+        </div>
+      </div>
+
+
+
+    </fieldset>
+  </form>
+
+
+</body>

@@ -1,0 +1,260 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Ticketing_App.Models;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Web.Http;
+using System.Web;
+
+namespace Ticketing_App.Controllers
+{
+    [Route("api/Incidents/")]
+    [ApiController]
+    public class IncidentsController : ControllerBase
+    {
+        private readonly MITRPLUSARC_TESTContext _context;
+
+        public IncidentsController(MITRPLUSARC_TESTContext context)
+        {
+            _context = context;
+        }
+
+        // GET: api/Incidents
+        [Route("GetIncidents")]
+        [HttpGet]
+        public IEnumerable<Incident> GetIncident()
+        {
+            return _context.Incident;
+        }
+        // GET: api/GetNextIncidentId
+
+        [Route("GetNextIncidentId")]
+        [HttpGet]
+        public List<Incident> GetNextIncidentId()
+        {
+            var NextIncId = _context.Incident
+                .FromSql($"sp_getNextIncidentcode1")
+                      .ToList();
+
+            return NextIncId;
+        }
+
+        // GET: api/Incidents/5
+        [Route("GetIncidentById/{id}")]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetIncident([FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var incident = await _context.Incident.FindAsync(id);
+
+            if (incident == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(incident);
+        }
+
+        // PUT: api/Incidents/5
+        [Route("PutIncident/{id}")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutIncident([FromRoute] Guid id, [FromBody] Incident incident)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != incident.IncidentId)
+            {
+                return BadRequest();
+            }
+
+            _context.Entry(incident).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!IncidentExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+        [Route("upload")]
+        [HttpPost, DisableRequestSizeLimit]
+        public string upload()
+        {
+           
+            string ModuleName = Request.Form["ModuleName"];
+            string ProblemDescription = Request.Form["ProblemDescription"];
+            string Priority = Request.Form["Priority"];
+            string RaisedDateTime = Request.Form["RaisedDateTime"];
+            string RaisedBy= Request.Form["RaisedBy"];
+            string Status = Request.Form["Status"];
+            int filecount = Request.Form.Files.Count;
+            for (int i =0; filecount >i; i++)
+            {
+                if (filecount > i)
+                {
+                   var file = Request.Form.Files[i];
+                
+                  if (file.Length > 0)
+                   {
+                        string fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+                        string fullPath = Path.Combine("wwwroot/TicketDocuments", fileName);
+                        using (var stream = new FileStream(fullPath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+
+                  }
+                }
+
+            }
+            return "hi";
+        }
+
+
+        public IEnumerable<FileEntity> GetImage()
+        {
+            var directoryFiles = Directory.GetFiles("wwwroot/TicketDocuments");
+            List<FileEntity> objentity = new List<FileEntity>();
+            foreach (var item in directoryFiles)
+            {
+                // do something here
+                string[] f = item.Split('/');
+                string[] filename = item.Split('\\');
+                objentity.Add(new FileEntity { FilePath = "/" + f[1], FileName = filename[1] });
+                //objentity.FilePath= item;//filepath
+                //objentity.FileName = f[1];//filename
+
+            }
+            return objentity;
+        }
+
+        // POST: api/Incidents
+        [Route("PostIncidentStatus")]
+        [HttpPost]
+        public async Task<IActionResult> PostIncidentStatus(Guid? id, [FromBody] Incident incident)
+        {
+            _context.Database
+            .ExecuteSqlCommand("sp_UpdateIncidentStatus @p0,@p1,@p2,@p3,@p4,@p5",
+            incident.IncidentCode, incident.Status,incident.RaisedBy,incident.ResolveDescription,incident.ResponseDescription,"MITRPLUSARC_TEST");
+
+            return CreatedAtAction("GetIncident", new { id = incident.IncidentId }, incident);
+
+        }
+
+        // POST: api/Incidents
+        [Route("PostIncident")]
+        [HttpPost]
+        public async Task<IActionResult> PostIncident(Guid? id, [FromBody] Incident incident)
+        {
+            int filecount = Request.Form.Files.Count;
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            //_context.Incident.Add(incident);
+            //try
+            //{
+            //    await _context.SaveChangesAsync();
+            //}
+            //catch (DbUpdateException)
+            //{
+            //    if (IncidentExists(incident.IncidentId))
+            //    {
+            //        return new StatusCodeResult(StatusCodes.Status409Conflict);
+            //    }
+            //    else
+            //    {
+            //        throw;
+            //    }
+            //}
+            _context.Database
+               .ExecuteSqlCommand("sp_RegisterIncident @p0,@p1,@p2," +
+               "@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10",
+               incident.Priority, incident.ProblemDescription, incident.RaisedBy, incident.Status, "MITRPLUSARC_TEST",
+               incident.ModuleName, incident.Link,Guid.NewGuid(), incident.FileName, incident.FilePath, incident.Category);
+
+            //return CreatedAtAction("GetIncident", new { id = incident.IncidentId }, incident);
+
+            //if (ModelState.IsValid)
+            //{
+            //    bool isNew = !id.HasValue;
+            //    Incident obj = isNew ? new Incident()
+            //    //{
+            //    //    AddedDate = DateTime.UtcNow
+            //    //}
+            //    : _context.Set<Incident>().SingleOrDefault(s => s.IncidentId == id.Value);
+            //    obj.Priority = incident.Priority;
+            //    obj.ProblemDescription = incident.ProblemDescription;
+            //    obj.RaisedBy = incident.RaisedBy;
+            //    obj.Status = incident.Status;
+            //    obj.DatabaseName = "MITRPLUSARC_TEST";
+            //    obj.ModuleName = incident.ModuleName;
+            //    obj.Link = incident.Link;
+            //    obj.IncidentId = Guid.NewGuid();
+            //    obj.FileName = incident.FileName;
+            //    obj.FilePath = incident.FileName;
+            //    obj.Category = incident.Category;
+
+            //    if (isNew)
+            //    {
+            //        _context.Add(incident);
+            //    }
+            //    await _context.SaveChangesAsync();
+            //}
+            return CreatedAtAction("GetIncident", new { id = incident.IncidentId }, incident);
+        }
+
+
+        // DELETE: api/Incidents/5
+        [Route("DeleteIncident/{id}")]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteIncident([FromRoute] Guid id)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+
+            var incident = await _context.Incident.FindAsync(id);
+            if (incident == null)
+            {
+                return NotFound();
+            }
+
+            _context.Incident.Remove(incident);
+            await _context.SaveChangesAsync();
+
+            return Ok(incident);
+        }
+
+        private bool IncidentExists(Guid id)
+        {
+            return _context.Incident.Any(e => e.IncidentId == id);
+        }
+    }
+}

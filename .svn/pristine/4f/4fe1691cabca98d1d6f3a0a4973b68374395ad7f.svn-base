@@ -1,0 +1,130 @@
+<app-nav-menu></app-nav-menu>
+
+<div class="radio">
+  <input type="radio" (change)="onChange('All')" value="All" name="status"  checked="checked" />All
+  <input type="radio" (change)="onChange('Outstanding')" value="Outstanding" name="status" />Outstanding
+  <input type="radio" (change)="onChange('Response')" value="Response" name="status" />Response
+  <input type="radio" (change)="onChange('Resolved')" value="Resolved" name="status" />Resolved
+  <input type="radio" (change)="onChange('Confirm')" value="Confirm" name="status" />Confirm
+</div>
+<br/>
+<div class="card border-primary mb-3 text-center">
+
+
+  <div class="card-body">
+    <blockquote class="card-blockquote">
+      <div class="row">
+        <div class="col-md-2">
+          <p style="text-align:center" class="h4 mb-1">Incidents</p>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-3">
+          <div class="row">
+            <div class="col-md-8">
+              <!--<button class="btn btn-sm btn-block btn-warning" routerLink='/raiseTicket' type="submit"><i class="btn btn-sm"></i>Raise a Ticket</button>-->
+              <input type="text" style="width:200px;" placeholder="Search by incident code" class="form-control" [(ngModel)]="searchTerm" />
+
+            </div>
+            <div class="col-md-4">
+              <button class="btn btn-sm btn-block btn-danger" routerLink='' type="submit"><i class="btn btn-sm"></i>Exit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </blockquote>
+  </div>
+</div>
+
+<div class="card border-warning mb-3 text-center">
+  <div class="card-body">
+    <blockquote class="card-blockquote">
+
+    
+        <div class="row">
+
+          <div class="col-md-1">
+
+          </div>
+          <div class="col-md-10">
+            <table class="table table-striped table-hover">
+
+              <thead class="thead-dark">
+                <tr>
+                  <th></th>
+                  <th>Incident Code</th>
+                  <th>Module Name</th>
+                  <th>Priority</th>
+                  <th>Raised Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let raiseTicketList of raiseTicketService.IncidentList|paginate:config|searchIncidents:searchTerm">
+
+                  <!--<td><a (click)="ShowOrEdit(raiseTicketList)||isEdit=true" class="btn btn-success btn-sm btn-circle" style="color:white"><i class="fa fa-pencil square-o"></i></a></td>-->
+                  <!--<td><button class="btn btn-success btn-sm btn-circle" (click)="ngxSmartModalService.getModal('popupOne').open();getIncidentByID(raiseTicketService.IncidentList.incidentId)"><i class="fa fa-pencil square-o"></i></button></td>-->
+                  <td><button class="btn btn-success btn-sm btn-circle" (click)="getIncidentByID(raiseTicketList.IncidentId)"><i class="fa fa-pencil square-o"></i></button></td>
+
+
+                  <td>{{raiseTicketList.IncidentCode}}</td>
+                  <td>{{raiseTicketList.ModuleName}}</td>
+                  <td>{{raiseTicketList.Priority}}</td>
+                  <td>{{raiseTicketList.RaisedDateTime|date:"dd-MMM-yyyy"}}</td>
+                  <td>{{raiseTicketList.Status}}</td>
+
+                </tr>
+                <!--<tr *ngIf="raiseTicketService.IncidentList.length==0">
+              <td></td>
+              <td></td>
+              <td></td>
+            <td>No data found !</td>
+            <td></td>
+            <td></td>
+          </tr>-->
+              </tbody>
+
+
+            </table>
+          </div>
+          <div class="col-md-1">
+
+          </div>
+
+        </div>
+   
+      
+
+      <pagination-controls (pageChange)="pageChangeMethod($event)"></pagination-controls>
+
+
+    </blockquote>
+  </div>
+</div>
+<app-incident-support-model></app-incident-support-model>
+<!--<button (click)="ngxSmartModalService.getModal('popupOne').open()">Open myModal 1</button>-->
+<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+
+<div class="modal fade" id="myModal" role="dialog">
+  <div class="modal-dialog">
+
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>-->

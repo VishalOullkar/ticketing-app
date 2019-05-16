@@ -1,0 +1,43 @@
+<div style="width:1350px; height:80px;background-color:blueviolet">
+
+  <div class="row">
+
+    <div class="col-md-3">
+      <a [routerLink]='["/home"]'> <img src="../../assets/Img/logo-nav@2x.png" /></a>
+    </div>
+    <div class="col-md-8">
+      <div class="dropdown">
+        <button class="dropbtn"><strong>Basics</strong></button>
+        <div class="dropdown-content">
+          <a [routerLink]='["/raiseTicket"]' (click)='collapse()'>
+            <span class='glyphicon glyphicon-education'></span> Counter
+          </a>
+
+
+        </div>
+      </div>
+            
+  
+    </div>
+    <div class="col-md-1">
+      <input type="button" class="btn-warning" routerLink='/' value="LogOut" />
+    </div>
+
+  </div>
+  <!--<img src="../../assets/Img/logo-nav@2x.png" />-->
+
+
+
+
+
+
+
+  <div class="dropdown" style="width:648px" align="right">
+    <!--<input type="button" class="btn-warning" routerLink='/' value="LogOut" />-->
+    <!--<div align="right">
+    </div>-->
+
+
+  </div>
+
+</div>

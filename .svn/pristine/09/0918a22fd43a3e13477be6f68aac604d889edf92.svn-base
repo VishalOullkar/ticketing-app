@@ -1,0 +1,151 @@
+<!-- Default form register -->
+<form [formGroup]="raiseTicketGroup" class="text-center border border-light p-5"  (ngSubmit)="onSave(file.files)">
+
+
+  <div class="card border-primary mb-3 text-center">
+    <div class="card-body">
+      <blockquote class="card-blockquote">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <p style="text-align:center" class="h4 mb-4">Raise Ticket</p>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-2">
+        
+            <button class="btn btn-lg btn-block btn-info" [disabled]="!raiseTicketGroup.valid" type="submit"><i class="btn btn-xsm"></i>Save</button>
+          </div>
+        </div>
+
+      </blockquote>
+    </div>
+  </div>
+
+  <div class="card border-warning">
+    <div class="card-body">
+      <blockquote class="card-blockquote">
+        <!--<footer>
+
+        </footer>-->
+        <div>
+
+
+          <div class="form-row mb-4">
+            <div class="col-sm-2">
+              <!-- Category name -->
+              <p>Category </p>
+            </div>
+            <div class="col-sm-3">
+              <div class="radio">
+                <input type="radio" value="Incident" formControlName="Category" />Incident
+                <input type="radio" value="Change Request" formControlName="Category" />Change Request
+              </div>
+
+            </div>
+
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-sm-2">
+              <input type="hidden" formControlName="IncidentId" class="form-control" />
+              <p>Incident ID </p>
+            </div>
+            <div class="col-sm-4">
+              <p *ngFor="let list of raiseTicketService.IncidentList">{{list.incidentCode}}</p>
+              <!--<input type="text" formControlName="IncidentCode" class="form-control" />-->
+            </div>
+          </div>
+
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Module/Subject :</p>
+            </div>
+            <div class="col-md-4">
+
+              <input type="text" formControlName="ModuleName" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Incident Description :</p>
+            </div>
+            <div class="col-md-4">
+              <textarea class="form-control" formControlName="ProblemDescription"></textarea>
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Attachments:</p>
+            </div>
+            <div class="col-md-4">
+              <input #file type="file" multiple class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Priority :</p>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" formControlName="Priority">
+                <option>--Select--</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Created Date:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" formControlName="RaisedDateTime" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Created By:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" formControlName="RaisedBy" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Mobile No.:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Status:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" formControlName="Status" class="form-control" />
+            </div>
+          </div>
+
+          <p>
+            Form Status :{{raiseTicketGroup.status}}
+          </p>
+        </div>
+      </blockquote>
+    </div>
+  </div>
+
+
+
+</form>
+
+
+<!-- Default form register -->

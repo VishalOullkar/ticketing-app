@@ -1,0 +1,61 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Http, RequestMethod, RequestOptions, Headers } from '@angular/http';
+import { Incident } from '../Models/incident';
+import { Observable } from 'rxjs';
+import { map, retry } from 'rxjs/operators';
+import { Guid } from 'guid-typescript';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RaiseTicketService {
+
+  public IncidentList: Incident[];
+  public SelectedIncident: Incident;
+  public incidentId: Guid;
+
+
+
+  constructor(private httpClient: HttpClient, private http: Http) { }
+
+  getincidentId() {
+    data => this.incidentId = data;
+  }
+
+  getincidentList(): Observable<Incident[]> {
+    return this.httpClient.get<Incident[]>('api/Incidents/GetIncidents');
+  }
+  getNextIncidentId(): Observable<Incident[]> {
+    return this.httpClient.get<Incident[]>('api/Incidents/GetNextIncidentId');
+  }
+
+  getIncidentDetailsById(Id: Guid): Observable<Incident> {
+    return this.httpClient.get<Incident>('api/Incidents/GetIncidentById/'+Id);
+  }
+
+  postStatus(IncidentModel: Incident)
+  {
+    var body = JSON.stringify(IncidentModel);
+    var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
+    var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
+    return this.http.post('api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json)) 
+  }
+
+  postIncidentDetails(IncidentModel: Incident) {
+
+    var body = JSON.stringify(IncidentModel);
+    var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
+    var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
+    return this.http.post('http://localhost:59090/api/Incidents/PostIncident', body, requestOptions).pipe(map(res => res.json));
+  }
+
+  putIncidentDetails(id: Guid, IncidentModel: Incident) {
+
+    var body = JSON.stringify(IncidentModel);
+    var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
+    var requestOptions = new RequestOptions({ method: RequestMethod.Put, headers: hearderOptions });
+    return this.http.put('http://localhost:59090/api/Incidents/PutIncident' + id, body, requestOptions).pipe(map(res => res.json));
+  }
+
+ }

@@ -1,0 +1,37 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Routes, RouterModule } from '@angular/router';
+import { RaisedTicketListComponent } from './raised-ticket-list/raised-ticket-list.component';
+import { RaiseTicketComponent } from './raise-ticket/raise-ticket.component';
+import { LoginComponent } from './login/login.component';
+import { EditRaisedTicketComponent } from './raised-ticket-list/edit-raised-ticket/edit-raised-ticket.component';
+import { AdminMasterComponent } from './admin-master/admin-master.component';
+
+import { IncidentSupportComponent } from './incident-support/incident-support.component';
+import { Incident } from './Models/incident';
+import { MasterUserComponent } from './master-user/master-user.component';
+import { UserComponent } from './master-user/user/user.component';
+
+
+const routes: Routes = [
+  { path: 'user', component: UserComponent }, 
+  { path: 'raiseTicket', component: RaiseTicketComponent }, 
+  { path: 'incidentSupport', component: IncidentSupportComponent },
+  { path: 'raisedTicketList', component: RaisedTicketListComponent },
+  { path: 'editRaisedTicket', component: EditRaisedTicketComponent },
+  { path: 'AdminMasterNav', component: AdminMasterComponent },
+  { path: '', component: LoginComponent, pathMatch: 'full' }
+  //{ path: 'user', component: MasterUserComponent },
+  ]
+
+@NgModule({
+  declarations: [],
+  imports: [RouterModule.forRoot(routes),
+    CommonModule
+  ],
+  exports:[RouterModule]
+})
+
+export class AppRoutingModule { }
+
+export const routingComponets = [MasterUserComponent,IncidentSupportComponent, EditRaisedTicketComponent, RaisedTicketListComponent, RaiseTicketComponent]

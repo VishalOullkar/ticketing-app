@@ -1,0 +1,275 @@
+<!--<br />
+
+<form #formdata="ngForm" (ngSubmit)="savedata(formdata)">
+
+  <div class="card border-warning">
+    <div class="card-body">
+      <blockquote class="card-blockquote">
+
+        <div>
+
+
+          <div class="form-row mb-4">
+            <div class="col-sm-2">
+
+              <p>Category </p>
+            </div>
+            <div class="col-sm-3">
+              <div class="radio">
+                <input type="radio" name="category" value="Incident" [(ngModel)]="raiseTicketService.SelectedIncident.Category" />Incident
+                <input type="radio" name="category" value="Change Request" [(ngModel)]="raiseTicketService.SelectedIncident.Category" />Change Request
+              </div>
+
+            </div>
+
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-sm-2">
+              <p>Incident ID </p>
+            </div>
+            <div class="col-sm-4">
+              <input type="text" readonly="readonly" name="incidentCode" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentCode" class="form-control" />
+
+            </div>
+          </div>
+
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Module/Subject :</p>
+            </div>
+            <div class="col-md-4">
+
+              <input type="text" readonly="readonly" name="moduleName" [(ngModel)]="raiseTicketService.SelectedIncident.ModuleName" class="form-control" />
+            </div>
+          </div>
+
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Incident Description :</p>
+            </div>
+            <div class="col-md-4">
+              <textarea class="form-control" readonly="readonly" name="problemDescription" [(ngModel)]="raiseTicketService.SelectedIncident.ProblemDescription"></textarea>
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Attachments:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="file" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Priority :</p>
+            </div>
+            <div class="col-md-4">
+              <select class="form-control" name="priority" [(ngModel)]="raiseTicketService.SelectedIncident.Priority">
+                <option>--Select--</option>
+                <option>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Created Date:</p>
+            </div>
+            <div class="col-md-4">
+
+              {{raiseTicketService.SelectedIncident.RaisedDateTime|date:'dd-MMM-yyyy'}}
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Created By:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" readonly="readonly" name="raisedBy" [(ngModel)]="raiseTicketService.SelectedIncident.RaisedBy" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Mobile No.:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" readonly="readonly" class="form-control" />
+            </div>
+          </div>
+          <div class="form-row mb-4">
+            <div class="col-md-2">
+
+              <p>Status:</p>
+            </div>
+            <div class="col-md-4">
+              <input type="text" readonly="readonly" name="status" [(ngModel)]="raiseTicketService.SelectedIncident.Status" class="form-control" />
+            </div>
+          </div>
+
+           <p>
+            Form Status :{{raiseTicketGroup.status}}
+          </p>
+        </div>
+      </blockquote>
+    </div>
+  </div>
+
+</form>-->
+
+
+
+
+
+
+<form #formdata="ngForm" (ngSubmit)="savedata(formdata)" class="text-center border border-light p-5">
+
+  <div class="card">
+    <div class="card-header" style="background-color:darkblue">
+      <b style="font-weight:bold;font-family:Arial;color:white"> Edit Ticket List</b>
+
+
+    </div>
+
+
+    <div class="card-body">
+
+      <div class="row">
+
+
+        <div class="col-lg-4 col-sm-4 col-4">
+          <b style="font-weight:bolder">Catgory : </b>
+          <div class="form-group">
+
+
+            <label class="custom-control custom-radio">
+              <input id="radioStacked1" name="category" readonly="readonly" type="radio" class="custom-control-input" value="Incident" [(ngModel)]="raiseTicketService.SelectedIncident.Category">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Incident </span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input id="radioStacked1" name="category" readonly="readonly" type="radio" class="custom-control-input" value="Incident" [(ngModel)]="raiseTicketService.SelectedIncident.Category">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Change Request</span>
+            </label>
+
+
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Module/Subject :</b>
+            <input type="text" class="form-control" name="moduleName" [(ngModel)]="raiseTicketService.SelectedIncident.ModuleName" readonly="readonly">
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+
+            <b>Incident ID :</b>
+            <input type="text" readonly="readonly" name="incidentCode" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentCode" class="form-control" />
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 col-sm-12 col-12">
+          <div class="form-group">
+            <b>Incident Description :</b>
+            <textarea class="form-control" name="problemDescription" readonly="readonly" [(ngModel)]="raiseTicketService.SelectedIncident.ProblemDescription"></textarea>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row">
+
+
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Priority :</b>
+
+            <select class="form-control" name="priority" [(ngModel)]="raiseTicketService.SelectedIncident.Priority" readonly="readonly" disabled="disabled">
+              <option>--Select--</option>
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+
+
+          </div>
+        </div>
+        <!--<div class="col-lg-4 col-sm-4 col-4">
+    <div class="form-group">
+      <b>Attachments:</b>
+      <input #file type="file" multiple class="form-control" />
+    </div>
+  </div>-->
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Created By:</b>
+            <input type="text" name="raisedBy" [(ngModel)]="raiseTicketService.SelectedIncident.RaisedBy" class="form-control" readonly="readonly" />
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Created Date :</b>
+            
+            <p class="form-control" readonly="readonly"> {{raiseTicketService.SelectedIncident.RaisedDateTime|date:'dd-MMM-yyyy'}} </p> 
+
+          </div>
+        </div>
+
+      </div>
+
+
+
+
+      <div class="row">
+        <!--<div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Created By:</b>
+            <input type="text" name="raisedBy" [(ngModel)]="raiseTicketService.SelectedIncident.RaisedBy" class="form-control" readonly="readonly" />
+          </div>
+        </div>-->
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Mobile No. : </b>
+            <input type="text" class="form-control" placeholder="Mobile No." />
+          </div>
+        </div>
+
+        <div class="col-lg-4 col-sm-4 col-4">
+          <div class="form-group">
+            <b>Status :</b>
+            <input type="text" name="status" class="form-control" [(ngModel)]="raiseTicketService.SelectedIncident.Status" readonly="readonly" />
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+  </div>
+
+</form>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+
+
+
