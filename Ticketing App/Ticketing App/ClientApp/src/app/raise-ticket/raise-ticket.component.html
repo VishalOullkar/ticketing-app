@@ -1,161 +1,16 @@
-<!--<form [formGroup]="raiseTicketGroup" class="text-center border border-light p-5" (ngSubmit)="onSave(file.files)">
-
-
-  <div class="card border-primary mb-3 text-center">
-    <div class="card-body">
-      <blockquote class="card-blockquote">
-        <div class="row">
-          <div class="col-md-4"></div>
-          <div class="col-md-4">
-            <p style="text-align:center" class="h4 mb-4">Raise Ticket</p>
-          </div>
-          <div class="col-md-2"></div>
-          <div class="col-md-2">
-
-            <button class="btn btn-lg btn-block btn-info" [disabled]="!raiseTicketGroup.valid" type="submit"><i class="btn btn-xsm"></i>Save</button>
-          </div>
-        </div>
-
-      </blockquote>
-    </div>
-  </div>
-
-  <div class="card border-warning">
-    <div class="card-body">
-      <blockquote class="card-blockquote">
-
-        <div>
-
-
-          <div class="form-row mb-4">
-            <div class="col-sm-2">
-
-              <p>Category </p>
-            </div>
-            <div class="col-sm-3">
-              <div class="radio">
-                <input type="radio" value="Incident" formControlName="Category" />Incident
-                <input type="radio" value="Change Request" formControlName="Category" />Change Request
-              </div>
-
-            </div>
-
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-sm-2">
-              <input type="hidden" formControlName="IncidentId" class="form-control" />
-              <p>Incident ID </p>
-            </div>
-            <div class="col-sm-4">
-              <p *ngFor="let list of raiseTicketService.IncidentList">{{list.IncidentCode}}</p>
-
-            </div>
-          </div>
-
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Module/Subject :</p>
-            </div>
-            <div class="col-md-4">
-
-              <input type="text" formControlName="ModuleName" class="form-control" />
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Incident Description :</p>
-            </div>
-            <div class="col-md-4">
-              <textarea class="form-control" formControlName="ProblemDescription"></textarea>
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Attachments:</p>
-            </div>
-            <div class="col-md-4">
-              <input #file type="file" multiple class="form-control" />
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Priority :</p>
-            </div>
-            <div class="col-md-4">
-              <select class="form-control" formControlName="Priority">
-                <option>--Select--</option>
-                <option>High</option>
-                <option>Medium</option>
-                <option>Low</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Created Date:</p>
-            </div>
-            <div class="col-md-4">
-              <input type="text" formControlName="RaisedDateTime" class="form-control" />
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Created By:</p>
-            </div>
-            <div class="col-md-4">
-              <input type="text" formControlName="RaisedBy" class="form-control" />
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Mobile No.:</p>
-            </div>
-            <div class="col-md-4">
-              <input type="text" class="form-control" />
-            </div>
-          </div>
-          <div class="form-row mb-4">
-            <div class="col-md-2">
-
-              <p>Status:</p>
-            </div>
-            <div class="col-md-4">
-              <input type="text" formControlName="Status" class="form-control" />
-            </div>
-          </div>
-
-          <p>
-            Form Status :{{raiseTicketGroup.status}}
-          </p>
-        </div>
-      </blockquote>
-    </div>
-  </div>
-
-
-
-</form>-->
-<!-- Default form register -->
-<!-- Default form register -->
-
-
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 <form [formGroup]="raiseTicketGroup" class="text-center border border-light p-5" (ngSubmit)="onSave(file.files)">
 
 
   <div class="card">
-    <div class="card-header" style="background-color:darkblue">
+    <div class="card-header" style="background-color:cadetblue;height:45px;">
       <b style="font-weight:bold;font-family:Arial;color:white"> Raise Ticket</b>
       <div class="btn-group pull-right">
-        <button class="btn btn-info btn-xs rounded-6" type="submit" style="text-align:center;background-color:white;color:blue;border-radius: 40px;font-family: Raleway-SemiBold; line-height: 15px;width:100px;font-size: 13px" [disabled]="!raiseTicketGroup.valid">Save</button>
+        <button class="btn btn-info btn-xs rounded-6" type="submit" style="text-align:center;background-color:white;color:blue;border-radius: 40px;font-family: Raleway-SemiBold; line-height: 15px;width:100px;font-size: 13px" [disabled]="!raiseTicketGroup.valid">Save</button>&nbsp;
+        <button class="btn btn-danger" routerLink='/raisedTicketList' style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height: 15px;width:100px;font-size: 13px">Exit</button>
+
       </div>
 
     </div>
@@ -167,36 +22,40 @@
 
 
         <div class="col-lg-4 col-sm-4 col-4">
-          <b style="font-weight:bolder">Catgory : </b>
+          <b style="font-weight:bolder">Catgory : <span style="color:red">*</span></b>
           <div class="form-group">
 
-    
+
             <label class="custom-control custom-radio">
-              <input id="radioStacked1" name="radio-stacked" type="radio" class="custom-control-input" value="Incident" formControlName="Category" required>
+              <input name="Category" type="radio" class="custom-control-input" value="Incident" formControlName="Category" required>
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description">Incident </span>
             </label>
             <label class="custom-control custom-radio">
-              <input id="radioStacked1" name="radio-stacked" type="radio" class="custom-control-input" value="Change Request" formControlName="Category" required>
+              <input name="Category" type="radio" class="custom-control-input" value="Change Request" formControlName="Category" required>
               <span class="custom-control-indicator"></span>
               <span class="custom-control-description">Change Request</span>
             </label>
 
 
           </div>
+          <div class="validation-error" *ngIf="fc.Category.invalid && fc.ModuleName.valid && fc.ProblemDescription.valid && fc.Priority.valid && fc.RaisedBy.valid && fc.Status.valid " style="font-family:Arial;font-size:12px;color:red;line-height:normal">Select an option.</div>
+
         </div>
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
-            <b>Module/Subject :</b>
-            <input type="text" class="form-control" formControlName="ModuleName" placeholder="Module/Subject" required>
+            <b>Module/Subject :<span style="color:red">*</span></b>
+            <input type="text" class="form-control" [style.border-color]="fc.ModuleName.touched && fc.ModuleName.invalid || fc.ProblemDescription.touched && fc.ModuleName.invalid   ? 'red': 'darkgray'"    formControlName="ModuleName" placeholder="Module/Subject" required>
           </div>
+          <div class="validation-error" *ngIf="fc.ModuleName.touched && fc.ModuleName.invalid" style="font-family:Arial;font-size:12px;color:red;line-height:normal">This Field is Required.</div>
+
         </div>
 
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
             <input type="hidden" formControlName="IncidentId" class="form-control" />
-            <b>Incident ID :</b>
-            <p *ngFor="let list of raiseTicketService.IncidentList"  class="form-control" readonly><b>{{list.IncidentCode}}</b></p>
+            <b>Incident ID :<span style="color:red">*</span></b>
+            <p *ngFor="let list of raiseTicketService.IncidentList" class="form-control" readonly><b>{{list.IncidentCode}}</b></p>
           </div>
         </div>
 
@@ -209,9 +68,11 @@
       <div class="row">
         <div class="col-lg-12 col-sm-12 col-12">
           <div class="form-group">
-            <b>Incident Description :</b>
-            <textarea class="form-control" placeholder="Write Description" formControlName="ProblemDescription"></textarea>
+            <b>Incident Description :<span style="color:red">*</span></b>
+            <textarea class="form-control" placeholder="Write Description" formControlName="ProblemDescription" [style.border-color]="fc.ProblemDescription.invalid && fc.ProblemDescription.touched ? 'red': 'darkgray'"></textarea>
           </div>
+          <div class="validation-error" *ngIf="fc.ProblemDescription.touched && fc.ProblemDescription.invalid" style="font-family:Arial;font-size:12px;color:red;line-height:normal">This Field is Required.</div>
+
         </div>
       </div>
 
@@ -221,15 +82,17 @@
 
 
         <div class="col-lg-4 col-sm-4 col-4">
-          <div class="form-group">
-            <b>Priority :</b>
-            <select class="form-control" formControlName="Priority">
-              <option>--Select--</option>
+          <div class="form-group" [class.has-error]="fc.Priority.touched && fc.Priority.invalid ">
+            <b>Priority :<span style="color:red">*</span></b>
+            <select class="form-control" formControlName="Priority" required>
+              <option >--Select--</option>
               <option>High</option>
               <option>Medium</option>
               <option>Low</option>
             </select>
           </div>
+          <div class="validation-error" *ngIf="fc.Priority.dirty && fc.Priority.invalid" style="font-family:Arial;font-size:12px;color:red;line-height:normal">This Field is Required.</div>
+         
         </div>
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
@@ -241,7 +104,7 @@
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
             <b>Created Date :</b>
-            <input type="text" formControlName="RaisedDateTime" readonly="readonly" class="form-control"   />
+            <input type="text" formControlName="RaisedDateTime" readonly="readonly" class="form-control" />
           </div>
         </div>
 
@@ -252,9 +115,10 @@
       <div class="row">
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
-            <b>Created By:</b>
-            <input type="text" formControlName="RaisedBy" class="form-control" placeholder="Created By" />
+            <b>Created By:<span style="color:red">*</span></b>
+            <input type="text" formControlName="RaisedBy" class="form-control" placeholder="Created By" [style.border-color]="fc.RaisedBy.touched && fc.RaisedBy.invalid   ? 'red': 'darkgray'" />
           </div>
+          <div class="validation-error" *ngIf="fc.RaisedBy.touched  && fc.RaisedBy.invalid" style="font-family:Arial;font-size:12px;color:red;line-height:normal">This Field is Required.</div>
         </div>
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
@@ -265,9 +129,10 @@
 
         <div class="col-lg-4 col-sm-4 col-4">
           <div class="form-group">
-            <b>Status :</b>
-            <input type="text" formControlName="Status" class="form-control" placeholder="Status" />
+            <b>Status :<span  style="color:red">*</span></b>
+            <input type="text" formControlName="Status" class="form-control" placeholder="Status" [style.border-color]="fc.Status.touched && fc.Status.invalid    ? 'red': 'darkgray'" />
           </div>
+          <div class="validation-error" *ngIf="fc.Status.touched  && fc.Status.invalid" style="font-family:Arial;font-size:12px;color:red;line-height:normal">This Field is Required.</div>
         </div>
       </div>
 
@@ -278,9 +143,6 @@
 
 </form>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
 
 
 

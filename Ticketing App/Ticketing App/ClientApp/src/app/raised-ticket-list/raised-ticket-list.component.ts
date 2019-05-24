@@ -19,7 +19,7 @@ export class RaisedTicketListComponent implements OnInit {
   constructor(private raiseTicketService: RaiseTicketService, private route: ActivatedRoute, private router: Router) {
     this.config = {
       currentPage: 1,
-      itemsPerPage: 5
+      itemsPerPage: 10
     };
     this.route.queryParamMap
       .pipe(map(p => p.get('page')))

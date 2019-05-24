@@ -5,6 +5,7 @@ namespace Ticketing_App.Models
 {
     public partial class Employee
     {
+
         public string UserId { get; set; }
         public string EmpId { get; set; }
         public string EmpName { get; set; }

@@ -9,11 +9,15 @@ import { EditRaisedTicketComponent } from './raised-ticket-list/edit-raised-tick
 import { IncidentSupportComponent } from './incident-support/incident-support.component';
 import { UserComponent } from './master-user/user/user.component';
 import { AuthGuard } from './auth.guard';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { IncidentSupportModelComponent } from './incident-support-model/incident-support-model.component';
 
 const routes: Routes = [
-  { path: 'user', component: UserComponent }, 
+  { path: 'sidebar', component: SidebarComponent },
+  { path: 'supportModel', component: IncidentSupportModelComponent }, 
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard] }, 
   { path: 'raiseTicket', component: RaiseTicketComponent }, 
-  { path: 'incidentSupport', canActivate:[AuthGuard], component: IncidentSupportComponent },
+  { path: 'incidentSupport', component: IncidentSupportComponent, canActivate: [AuthGuard]},
   { path: 'raisedTicketList', component: RaisedTicketListComponent },
   { path: 'editRaisedTicket', component: EditRaisedTicketComponent },
   { path: '', component: LoginComponent, pathMatch: 'full' }
@@ -30,4 +34,4 @@ const routes: Routes = [
 
 export class AppRoutingModule { }
 
-export const routingComponets = [IncidentSupportComponent, EditRaisedTicketComponent, RaisedTicketListComponent, RaiseTicketComponent]
+export const routingComponets = [SidebarComponent,IncidentSupportComponent, EditRaisedTicketComponent, RaisedTicketListComponent, RaiseTicketComponent]

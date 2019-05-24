@@ -1,0 +1,26 @@
+
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+.odd {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+
+  //  background-color: #f2f9ff;
+}
+
+.even {
+  border-color: #ccc;
+  background-color: #ddd;
+  //background-color: #eceff3;
+}
+
+.scrolling {
+  height: 250px;
+  overflow-y:scroll;
+}

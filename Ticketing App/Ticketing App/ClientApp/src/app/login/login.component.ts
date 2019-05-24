@@ -3,13 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoginService } from '../Shared/login.service';
 import { Users } from '../Models/users';
 import { strictEqual } from 'assert';
+import { UserDetails } from '../Models/UserDetails';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  model = new UserDetails('', '');
+  Conditionhide: boolean = true;
   constructor(private router: Router, private loginService: LoginService) {
 
     //this.OnSubmit(username, Email)
@@ -17,12 +19,12 @@ export class LoginComponent implements OnInit {
 
     //}
 
-      
+
 
 
   }
 
-  SelectedUser: Users;
+  SelectedUser: Users[];
   msg: string;
 
   ngOnInit() {
@@ -32,14 +34,16 @@ export class LoginComponent implements OnInit {
   checkusernameandpassword(uname: string, pwd: string) {
     console.warn(this.SelectedUser[0].EmailId);
     if ((uname == this.SelectedUser[0].EmailId) && (pwd == this.SelectedUser[0].Password)) {
-      localStorage.setItem('username', "admin");
-
+      localStorage.setItem('username', this.SelectedUser[0].Username);
+      this.Conditionhide = true;
       return true;
     }
     else {
+      this.Conditionhide = false;
       return false;
     }
   }
+
 
 
   OnSubmit(userName, password) {
@@ -57,21 +61,30 @@ export class LoginComponent implements OnInit {
     this.loginService.getAuthenticatedUser(Username, Password)
       .subscribe(res => {
         this.SelectedUser = res;
-        console.log(this.SelectedUser);
-        console.log(this.SelectedUser[0].EmailId);
 
-        var output = this.checkusernameandpassword(Username, Password)
+        if (this.SelectedUser.length == 0) {
 
-        if (output == true) {
-          localStorage.setItem('username', "admin");
+          this.Conditionhide = false;
+          setTimeout(function () {
+            this.Conditionhide = true;
+          }.bind(this), 3000);
 
-          this.router.navigate(['/incidentSupport'])
-        }
-        else if (userName.trim() == "" && password.trim() == "") {
-          this.msg = "Please enter the username or Password"
         }
         else {
-          this.msg = "Invalid username or password"
+
+          var output = this.checkusernameandpassword(Username, Password)
+
+          if (output == true) {
+            localStorage.setItem('username', this.SelectedUser[0].Username);
+
+            this.router.navigate(['/incidentSupport'])
+          }
+          else if (userName.trim() == "" && password.trim() == "") {
+            this.msg = "Please enter the username or Password"
+          }
+          else {
+            this.msg = "Invalid username or password"
+          }
         }
       })
 
@@ -88,27 +101,27 @@ export class LoginComponent implements OnInit {
 
     //var output =this.loginService.checkusernameandpassword(Username,Password)
 
-    
+
   }
-    //if ((userName.trim() == "" && password.trim() == "")) {
-    //  this.msg = "Please enter the username or Password"
-    //  console.warn(this.msg);
-    //}
-    //else if ((userName.trim() == "vishal" && password.trim() == "123")) {
-    //  this.router.navigate(['/incidentSupport'])
-    //  console.warn('Welcome to application');
-    //}
-    //else if ((userName.trim() == "admin" && password.trim() == "123")) {
-    //  this.router.navigate(['/incidentSupport'])
-    //  console.warn('Welcome to application');
-    //}
-    //else {
-    //  this.msg = "Invalid username or password"
-    //  console.warn('Invalid username or password');
-    //}
+  //if ((userName.trim() == "" && password.trim() == "")) {
+  //  this.msg = "Please enter the username or Password"
+  //  console.warn(this.msg);
+  //}
+  //else if ((userName.trim() == "vishal" && password.trim() == "123")) {
+  //  this.router.navigate(['/incidentSupport'])
+  //  console.warn('Welcome to application');
+  //}
+  //else if ((userName.trim() == "admin" && password.trim() == "123")) {
+  //  this.router.navigate(['/incidentSupport'])
+  //  console.warn('Welcome to application');
+  //}
+  //else {
+  //  this.msg = "Invalid username or password"
+  //  console.warn('Invalid username or password');
+  //}
 
 
 
-  
+
 
 }

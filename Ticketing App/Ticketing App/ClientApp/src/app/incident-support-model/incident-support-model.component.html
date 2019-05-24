@@ -1,19 +1,19 @@
-<ngx-smart-modal #popupOne [identifier]="'popupOne'">
+<!--<ngx-smart-modal #popupOne [identifier]="'popupOne'" customClass="msg-modal">
 
   <form #formdata="ngForm" (ngSubmit)="updateStatus(formdata)">
     <h3>Response to incident</h3>
     <p>Do you resolved or want to reponse this incident.</p>
 
     <div class="radio">
-      <input type="radio" name="status" (change)="checkStatus('Resolve')" [(ngModel)]="raiseTicketService.SelectedIncident.Status" value="Resolved"  />Resolve
-      <input type="radio" name="status" (change)="checkStatus('Response')" [(ngModel)]="raiseTicketService.SelectedIncident.Status" value="Response"/>Response
+      <input type="radio" name="status" (change)="checkStatus('Resolve')" [(ngModel)]="raiseTicketService.SelectedIncident.Status" value="Resolved" />Resolve
+      <input type="radio" name="status" (change)="checkStatus('Response')" [(ngModel)]="raiseTicketService.SelectedIncident.Status" value="Response" />Response
     </div>
 
     <div class="form-group" *ngIf="isResove">
       <textarea name="ResolveDescription" #ResolveDescription="ngModel" [(ngModel)]="raiseTicketService.SelectedIncident.ResolveDescription" class="form-control" placeholder="Write Resolve comment"></textarea>
-      <input name="IncidentId" #IncidentId="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentId"  class="form-control" />
-      <input name="IncidentCode" #IncidentCode="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentCode"  class="form-control" />
-      <input name="RaisedBy" #RaisedBy="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.RaisedBy"  class="form-control" />
+      <input name="IncidentId" #IncidentId="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentId" class="form-control" />
+      <input name="IncidentCode" #IncidentCode="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.IncidentCode" class="form-control" />
+      <input name="RaisedBy" #RaisedBy="ngModel" type="hidden" [(ngModel)]="raiseTicketService.SelectedIncident.RaisedBy" class="form-control" />
 
     </div>
     <div class="form-group" *ngIf="isResponse">
@@ -24,7 +24,6 @@
       <div class="col-md-3">
         <button type="submit" class="btn btn-sm btn-block btn-success">Save</button>
 
-        <!--<button (click)="popupOne.close()" class="btn btn-sm btn-block btn-danger">Close</button>-->
 
       </div>
       <div class="col-md-3">
@@ -32,6 +31,211 @@
       <div class="col-md-6">
       </div>
     </div>
-    </form>
-</ngx-smart-modal>
+  </form>
+</ngx-smart-modal>-->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
+<!--<style type="text/css">
+
+
+  .has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 28.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+  }
+</style>-->
+
+<br />
+<div class="container">
+  <hr style="border:solid 1px;color:darkgrey" />
+  <div class="row">
+    <div class="col-md-6">
+      <form #formdata="ngForm" (ngSubmit)="updateData(formdata)">
+        <div class="row">
+
+          <div class="col-sm">
+            <b style="font-weight:bolder">Catgory : </b><br />
+            <label class="custom-control custom-radio">
+              <input id="radioStacked1" name="Category" [(ngModel)]="IncidentModel.Category" type="radio" class="custom-control-input" value="Incident" readonly="readonly">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Incident </span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input id="radioStacked1" name="Category" [(ngModel)]="IncidentModel.Category" type="radio" class="custom-control-input" value="Change Request" readonly="readonly">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Change Request</span>
+            </label>
+          </div>
+          <div class="col-sm">
+            <b>Module/Subject :</b>
+            <input type="text" name="moduleName" [(ngModel)]="IncidentModel.ModuleName" class="form-control" readonly="readonly">
+          </div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-sm">
+            <b style="font-weight:bolder">Incident ID : </b>
+            <input type="text" name="incidentCode" [(ngModel)]="IncidentModel.IncidentCode" class="form-control" readonly="readonly">
+          </div>
+          <div class="col-sm">
+            <b style="font-weight:bolder">Priority :</b>
+            <select name="priority" [(ngModel)]="IncidentModel.Priority" readonly="readonly" class="form-control" disabled="disabled">
+              <option>--Select--</option>
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+          </div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-sm">
+            <b style="font-weight:bolder">Incident Description: </b>
+            <textarea class="form-control" name="problemDescription" readonly="readonly" [(ngModel)]="IncidentModel.ProblemDescription"></textarea>
+          </div>
+
+
+        </div>
+        <div class="row">
+
+          <div class="col-sm">
+            <b style="font-weight:bolder">Created Date : </b>
+
+            <p class="form-control" readonly="readonly"> {{IncidentModel.RaisedDateTime|date:'dd-MMM-yyyy'}} </p>
+          </div>
+          <div class="col-sm">
+            <b style="font-weight:bolder">Created By : </b>
+            <input type="text" name="raisedBy" [(ngModel)]="IncidentModel.RaisedBy" class="form-control" readonly="readonly" />
+          </div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-sm">
+            <b style="font-weight:bolder">Mobile No.: </b>
+            <input type="text" class="form-control" readonly="readonly" />
+          </div>
+          <div class="col-sm">
+            <b style="font-weight:bolder">Status : </b>
+            <input type="text" class="form-control" name="status" [(ngModel)]="IncidentModel.Status" readonly="readonly" />
+          </div>
+
+        </div>
+
+        <div class="row">
+
+          <!--<div class="col-sm">
+            <b style="font-weight:bolder">Do you resolved or want to reponse? </b><b style="color:red">*</b>  <br />
+            <label class="custom-control custom-radio">
+              <input [class.is-invalid]="Resolve.invalid" #Resolve="ngModel" name="status" (change)="checkStatus('Resolve')" [(ngModel)]="IncidentModel.Status" value="Resolved" type="radio" class="custom-control-input" required>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Resolve  </span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input [class.is-invalid]="Response.invalid" name="status" #Response="ngModel" (change)="checkStatus('Response')" [(ngModel)]="IncidentModel.Status" value="Response" type="radio" class="custom-control-input" required>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Response</span>
+            </label>
+          </div>-->
+          <div class="col-sm">
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+
+
+      <form [formGroup]="ConvGroup" (ngSubmit)="updateConversation()">
+
+        <div class="row">
+          <div class="col-sm">
+            <b style="font-weight:bolder">Do you resolved or want to reponse? </b><b style="color:red">*</b>  <br />
+            <label class="custom-control custom-radio">
+              <input  formControlName="Status"  (change)="checkStatus('Resolve')" value="Resolved" type="radio" class="custom-control-input" required>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Resolve  </span>
+            </label>
+            <label class="custom-control custom-radio">
+              <input  formControlName="Status"  (change)="checkStatus('Response')" value="Response" type="radio" class="custom-control-input" required>
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">Response</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="row">
+          
+
+          <div class="col-sm">
+            <div class="col-sm">
+              <b style="font-weight:bolder">Conversation : </b>
+
+            </div>
+            <div class="scrolling">
+
+              <div *ngFor="let convList of raiseTicketService.IncidentConvList; let index =index;let isOdd=odd;let isEven=even" [class.odd]="isOdd" [class.even]="isEven">
+
+                <div>
+                  <b>{{convList.commentedBy}} :</b>
+                  {{convList.comment}}
+                  <p [ngStyle]="{'color':convList.Status === 'Resolved' ? 'green' : 'blue' }">{{convList.Status}}</p>
+
+                </div>
+
+              </div>
+
+              <!--{{IncidentModel|json}}-->
+            </div>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <br />
+            <b style="font-weight:bolder">Comment: </b> <b style="color:red">*</b>
+            <div class="form-group" *ngIf="f.Status.value=='Resolve'||f.Status.value=='Resolved'">
+              <textarea style="height:100px;" [class.is-invalid]="f.ResolveDescription.invalid && f.ResolveDescription.touched" formControlName="ResolveDescription" class="form-control" placeholder="Write Resolve comment" required></textarea>
+              <small class="text-danger" [class.d-none]="f.ResolveDescription.valid ||f.ResolveDescription.untouched">write Resolve description</small>
+            </div>
+            <div class="form-group" *ngIf="f.Status.value=='Response'">
+              <textarea style="height:100px" [class.is-invalid]="f.ResponseDescription.invalid && f.ResponseDescription.touched" formControlName="ResponseDescription" class="form-control" placeholder="Write Response comment" required></textarea>
+              <small class="text-danger" [class.d-none]="f.ResponseDescription.valid ||f.ResponseDescription.untouched">write Resolve description</small>
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+
+        <!--<div class="modal-footer">-->
+        <button type="submit" [disabled]="!ConvGroup.valid" class="btn btn-success" style="text-align:center;border-radius:40px;font-family:Raleway-SemiBold; line-height: 15px;width:100px;font-size: 13px;">Save</button>
+        <button type="submit" routerLink="/incidentSupport" class="btn btn-danger" style="text-align:center;border-radius:40px;font-family:Raleway-SemiBold; line-height: 15px;width:100px;font-size: 13px;">Close</button>
+        <!--</div>-->
+      </form>
+
+
+
+    </div>
+
+
+
+
+  </div>
+
+  <hr style="border:solid 1px;color:darkgrey" />
+</div>
 

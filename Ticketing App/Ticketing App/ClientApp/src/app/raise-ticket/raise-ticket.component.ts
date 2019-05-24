@@ -63,7 +63,7 @@ export class RaiseTicketComponent implements OnInit {
     }
   }
 
-
+  get fc() { return this.raiseTicketGroup.controls }
 
   onSave(files) {
 
@@ -81,7 +81,7 @@ export class RaiseTicketComponent implements OnInit {
       Priority: ['', Validators.required],
       ProblemDescription: ['', Validators.required],
       RaisedDateTime: this.datePipe.transform(Date.now(), 'dd-MMM-yyyy'),
-      RaisedBy: [''],
+    RaisedBy: ['',Validators.required],
       ResolveDescription: [''],
       ResolvedDateTime: [''],
       ResolvedBy: [''],

@@ -11,6 +11,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
+import { BsDropdownModule } from 'ngx-bootstrap';
+
 
 
 import { AppComponent } from './app.component';
@@ -25,6 +27,15 @@ import { RaisedTicketListPipe } from './Shared/raised-ticket-list.pipe';
 import { SearchIncidentsPipe } from './Shared/search-incidents.pipe';
 import { UserComponent } from './master-user/user/user.component';
 import { AuthGuard } from './auth.guard';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
+import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
+import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+  suppressScrollX: true
+};
 
 
 @NgModule({
@@ -36,19 +47,30 @@ import { AuthGuard } from './auth.guard';
     IncidentSupportComponent, IncidentSupportModelComponent,
     RaisedTicketListPipe,
     SearchIncidentsPipe,
-    UserComponent
+    UserComponent,
+    SidebarComponent
   ],
   imports: [
-    NgxSmartModalModule.forRoot(),
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), AngularFontAwesomeModule,
-    HttpClientModule, AppRoutingModule, RouterModule, BrowserAnimationsModule, NgxPaginationModule,
+    BrowserModule,
+    BrowserAnimationsModule,
+    NgxSmartModalModule.forRoot(), PerfectScrollbarModule, NgbModule,
+    BsDropdownModule.forRoot(),
+    AngularFontAwesomeModule,
+    HttpClientModule, AppRoutingModule, RouterModule,  NgxPaginationModule,
     FormsModule, HttpModule, ReactiveFormsModule,
     ToastrModule.forRoot({
       timeOut: 2000,
       positionClass: 'toast-bottom-right'
     }),
   ],
-  providers: [DatePipe, AuthGuard],
+ // providers: [DatePipe, AuthGuard],
+
+  providers: [{
+    provide: PERFECT_SCROLLBAR_CONFIG,
+    useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+  }, DatePipe, AuthGuard],
+
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

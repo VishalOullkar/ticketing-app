@@ -20,8 +20,7 @@ export class EditRaisedTicketComponent implements OnInit {
     private datePipe: DatePipe,private route:ActivatedRoute) { }
 
   IncidentId: any;
-  var 
-  IncidentModel: Incident;
+ IncidentModel: Incident;
 
 
   reset()

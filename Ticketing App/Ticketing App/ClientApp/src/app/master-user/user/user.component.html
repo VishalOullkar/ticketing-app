@@ -1,65 +1,116 @@
-<app-nav-menu></app-nav-menu>
+<!--<app-nav-menu></app-nav-menu>-->
 
 <br />
+
 <div class="row">
-
-  <div class="col-md-1">
-  </div>
-
-  <div class="col-md-3">
-    <h2 class="text-center">Add User</h2>
-    <form [formGroup]="userGroup" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="Username">User ID:</label>
-        <input type="text" formControlName="Username" placeholder="User ID" name="Username" class="form-control">
-        <input type="hidden" formControlName="Userid" placeholder="User ID" name="Userid" class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label for="email">Email address:</label>
-        <input type="email" formControlName="EmailId" placeholder="Email" name="EmailId" class="form-control">
-      </div>
-
-      <div class="form-group">
-        <label for="Password">Password:</label>
-        <input formControlName="Password" placeholder="Password" name="Password" class="form-control">
-      </div>
-
-      <button type="submit" class="btn btn-success">Save</button>
-    </form>
-  </div>
-
   <div class="col-md-2">
+    <app-sidebar></app-sidebar>
   </div>
+  <div class="col-md-10">
+    <div class="row">
+
+      <div class="col-md-6" *ngIf="isEditable">
+        <form form [formGroup]="userGroup" (ngSubmit)="onSubmit()">
+          <div class="card border-dark mb-5">
+            <div class="card-header" style="background-color:#337ab7;color:white;height:45px;">
+
+              <b style="font-weight:bold;font-family:Arial;color:white">  Add User</b>
+              <div class="btn-xs pull-right" style="padding-top:unset;padding-bottom:10px;">
+                <button type="submit" [disabled]="!userGroup.valid" class="btn btn-success" routerLink='' style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height:12px;width:100px;font-size: 15px;">Save</button>
+
+                <!--<button type="submit" [disabled]="!userGroup.valid" class="btn btn-success">Save</button>-->
+              </div>
+            </div>
+            <div class="card-body text-success">
+              <div class="form-group">
+                <label for="Username">User ID:</label>
+                <input type="text" [class.is-invalid]="f.Username.invalid && f.Username.touched" formControlName="Username" placeholder="User ID" name="Username" class="form-control" required>
+                <small class="text-danger" [class.d-none]="f.Username.valid ||f.Username.untouched">User Id is required</small>
+                <input type="hidden" formControlName="Userid" placeholder="User ID" name="Userid" class="form-control">
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" [class.is-invalid]="f.EmailId.invalid && f.EmailId.touched" formControlName="EmailId" placeholder="Email" name="EmailId" class="form-control" required>
+                <small class="text-danger" [class.d-none]="f.EmailId.valid || f.EmailId.untouched">Email is required</small>
+              </div>
+
+              <div class="form-group">
+                <label for="Password">Password:</label>
+                <input [class.is-invalid]="f.Password.invalid && f.Password.touched" formControlName="Password" placeholder="Password" name="Password" class="form-control" required>
+                <small class="text-danger" [class.d-none]="f.Password.valid ||f.Password.untouched">Password is required</small>
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+      </div>
 
 
-  <div class="col-md-6">
-    <h2> User Details</h2>
-    <button class="btn btn-danger" (click)="addUser()"> Add User</button>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>User Name</th>
-          <th>Email</th>
-          <th>Password</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let user of userService.userList">
+      <div class="col-md-6">
+        <div class="card border-dark mb-5">
+          <div class="card-header" style="background-color:#337ab7;color:white;height:45px;">
+            <!--<h4 class="card-title pull-left" style="padding-top: 7.5px;">User Details</h4>-->
+            <b style="font-weight:bold;font-family:Arial;color:white">  User Details</b>
+            <div class="btn-xs pull-right">
+              <!--<button class="btn btn-danger" (click)="addUser()"> Add User</button>-->
 
-          <td>{{user.Username}}</td>
-          <td>{{user.EmailId}}</td>
-          <td>{{user.Password}}</td>
+              <button (click)="addUser()" class="btn" style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height:12px;width:100px;font-size: 15px;background-color:#990033;color:white">Add User</button>
 
-          <td></td>
-          <td>
-            <button class="text-danger" (click)="deleteUser(user.Userid)"> <i class="fa fa-trash-o"></i></button>
-            <button class="btn-success" (click)="editUser(user)" style="margin-left: 20px;"> <i class="fa fa-pencil"></i></button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+
+
+            </div>
+          </div>
+          <div class="card-body text-dark">
+            <table class="table table-sm table-stripped">
+              <thead>
+                <tr>
+
+                  <th>User Name</th>
+                  <th>Email</th>
+                  <th>Password</th>
+                  <th></th>
+                  <th></th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of userService.userList">
+
+                  <td>{{user.Username}}</td>
+                  <td>{{user.EmailId}}</td>
+                  <td>{{user.Password}}</td>
+
+                  <td></td>
+                  <td>
+                    <a (click)="editUser(user)">
+                      <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+
+                    <!--<button class="text-danger" (click)="deleteUser(user.Userid)"> <i class="fa fa-trash-o"></i></button>
+  <button class="btn-success" (click)="editUser(user)" style="margin-left: 20px;"> <i class="fa fa-pencil"></i></button>-->
+                    &nbsp;&nbsp;
+                    <a (click)="deleteUser(user.Userid)">
+                      <span class="glyphicon glyphicon-trash" style="color:red"></span>
+                    </a>
+                  </td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

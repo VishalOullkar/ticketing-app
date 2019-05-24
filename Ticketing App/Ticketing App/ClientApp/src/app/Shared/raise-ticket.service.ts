@@ -5,6 +5,8 @@ import { Incident } from '../Models/incident';
 import { Observable } from 'rxjs';
 import { map, retry, catchError } from 'rxjs/operators';
 import { Guid } from 'guid-typescript';
+import { Incidentconversation } from '../Models/incidentconversation';
+import { debug } from 'util';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -18,6 +20,7 @@ const httpOptions = {
 export class RaiseTicketService {
 
   public IncidentList: Incident[];
+  public IncidentConvList: Incidentconversation[];
   public SelectedIncident: Incident;
   public incidentId: Guid;
   Raisedate:any;
@@ -36,6 +39,9 @@ export class RaiseTicketService {
   getincidentList(): Observable<Incident[]> {
     return this.httpClient.get<Incident[]>('api/Incidents/GetIncidents');
   }
+  getincidentConversationList(Id:Guid): Observable<Incidentconversation[]> {
+    return this.httpClient.get<Incidentconversation[]>('api/IncidentConversations/GetConversationListById/'+Id);
+  }
   getNextIncidentId(): Observable<Incident[]> {
     return this.httpClient.get<Incident[]>('api/Incidents/GetNextIncidentId');
   }
@@ -44,12 +50,14 @@ export class RaiseTicketService {
     return this.httpClient.get<Incident>('api/Incidents/GetIncidentById/'+Id);
   }
 
+  
+
   postStatus(IncidentModel: any)
   {
     var body = JSON.stringify(IncidentModel);
     var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
     var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
-    return this.http.post('http://localhost:59090/api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json)) 
+    return this.http.post('api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json)) 
   }
 
   postIncidentDetails(IncidentModel: Incident) {
@@ -57,9 +65,16 @@ export class RaiseTicketService {
     var body = JSON.stringify(IncidentModel);
     var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
     var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
-    return this.http.post('api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json));
+   return this.http.post('api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json));
+  
+  }
+  postIncidentConversation(conversationtModel: Incidentconversation) { 
 
-
+    var body = JSON.stringify(conversationtModel);
+    var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
+    var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
+    return this.http.post('api/IncidentConversations/PostIncidentConversation', body, requestOptions).pipe(map(res => res.json));
+  
   }
 
 

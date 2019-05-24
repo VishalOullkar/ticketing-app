@@ -31,7 +31,7 @@ namespace Ticketing_App.Controllers
         [HttpGet]
         public IEnumerable<Incident> GetIncident()
         {
-            return _context.Incident;
+            return _context.Incident.OrderBy(s => s.IncidentCode);
         }
         // GET: api/GetNextIncidentId
 
@@ -73,7 +73,7 @@ namespace Ticketing_App.Controllers
             var raiseticketlist = _context.Incident.FromSql("sp_GetRaiseTicketDetails @p0,@p1",
              "A0B0C0D0E00100001", Status).ToList();
 
-            return raiseticketlist;
+            return raiseticketlist.OrderBy(sl => sl.IncidentCode); ;
 
         }
 
@@ -195,67 +195,15 @@ namespace Ticketing_App.Controllers
 
 
 
+
+
         // POST: api/Incidents
         [Route("api/Incidents/PostIncident")]
         [HttpPost]
         public async Task<IActionResult> PostIncident( [FromBody] Incident incident)
         {
             int filecount = Request.Form.Files.Count;
-            //if (!ModelState.IsValid)
-            //{
-            //    return BadRequest(ModelState);
-            //}
 
-            //_context.Incident.Add(incident);
-            //try
-            //{
-            //    await _context.SaveChangesAsync();
-            //}
-            //catch (DbUpdateException)
-            //{
-            //    if (IncidentExists(incident.IncidentId))
-            //    {
-            //        return new StatusCodeResult(StatusCodes.Status409Conflict);
-            //    }
-            //    else
-            //    {
-            //        throw;
-            //    }
-            //}
-            //_context.Database
-            //   .ExecuteSqlCommand("sp_RegisterIncident @p0,@p1,@p2," +
-            //   "@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10",
-            //   incident.Priority, incident.ProblemDescription, incident.RaisedBy, incident.Status, "MITRPLUSARC_TEST",
-            //   incident.ModuleName, incident.Link, Guid.NewGuid(), incident.FileName, incident.FilePath, incident.Category);
-
-            //return CreatedAtAction("GetIncident", new { id = incident.IncidentId }, incident);
-
-            //if (ModelState.IsValid)
-            //{
-            //    bool isNew = !id.HasValue;
-            //    Incident obj = isNew ? new Incident()
-            //    //{
-            //    //    AddedDate = DateTime.UtcNow
-            //    //}
-            //    : _context.Set<Incident>().SingleOrDefault(s => s.IncidentId == id.Value);
-            //    obj.Priority = incident.Priority;
-            //    obj.ProblemDescription = incident.ProblemDescription;
-            //    obj.RaisedBy = incident.RaisedBy;
-            //    obj.Status = incident.Status;
-            //    obj.DatabaseName = "MITRPLUSARC_TEST";
-            //    obj.ModuleName = incident.ModuleName;
-            //    obj.Link = incident.Link;
-            //    obj.IncidentId = Guid.NewGuid();
-            //    obj.FileName = incident.FileName;
-            //    obj.FilePath = incident.FileName;
-            //    obj.Category = incident.Category;
-
-            //    if (isNew)
-            //    {
-            //        _context.Add(incident);
-            //    }
-            //    await _context.SaveChangesAsync();
-            //}
             return CreatedAtAction("GetIncident", new { id = incident.IncidentId }, incident);
         }
 

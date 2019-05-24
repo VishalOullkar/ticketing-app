@@ -5,6 +5,11 @@ namespace Ticketing_App.Models
 {
     public partial class Incident
     {
+        public Incident()
+        {
+            IncidentConversation = new HashSet<IncidentConversation>();
+        }
+
         public string IncidentCode { get; set; }
         public string Category { get; set; }
         public string Priority { get; set; }
@@ -26,9 +31,7 @@ namespace Ticketing_App.Models
         public Guid IncidentId { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
-      
-   
 
-
+        public ICollection<IncidentConversation> IncidentConversation { get; set; }
     }
 }
