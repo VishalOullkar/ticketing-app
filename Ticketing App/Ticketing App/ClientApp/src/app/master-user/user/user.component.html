@@ -1,116 +1,136 @@
-<!--<app-nav-menu></app-nav-menu>-->
-
-<br />
 
 <div class="row">
   <div class="col-md-2">
     <app-sidebar></app-sidebar>
   </div>
-  <div class="col-md-10">
-    <div class="row">
-
-      <div class="col-md-6" *ngIf="isEditable">
-        <form form [formGroup]="userGroup" (ngSubmit)="onSubmit()">
-          <div class="card border-dark mb-5">
-            <div class="card-header" style="background-color:#337ab7;color:white;height:45px;">
-
-              <b style="font-weight:bold;font-family:Arial;color:white">  Add User</b>
-              <div class="btn-xs pull-right" style="padding-top:unset;padding-bottom:10px;">
-                <button type="submit" [disabled]="!userGroup.valid" class="btn btn-success" routerLink='' style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height:12px;width:100px;font-size: 15px;">Save</button>
-
-                <!--<button type="submit" [disabled]="!userGroup.valid" class="btn btn-success">Save</button>-->
-              </div>
-            </div>
-            <div class="card-body text-success">
-              <div class="form-group">
-                <label for="Username">User ID:</label>
-                <input type="text" [class.is-invalid]="f.Username.invalid && f.Username.touched" formControlName="Username" placeholder="User ID" name="Username" class="form-control" required>
-                <small class="text-danger" [class.d-none]="f.Username.valid ||f.Username.untouched">User Id is required</small>
-                <input type="hidden" formControlName="Userid" placeholder="User ID" name="Userid" class="form-control">
-              </div>
-
-              <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="email" [class.is-invalid]="f.EmailId.invalid && f.EmailId.touched" formControlName="EmailId" placeholder="Email" name="EmailId" class="form-control" required>
-                <small class="text-danger" [class.d-none]="f.EmailId.valid || f.EmailId.untouched">Email is required</small>
-              </div>
-
-              <div class="form-group">
-                <label for="Password">Password:</label>
-                <input [class.is-invalid]="f.Password.invalid && f.Password.touched" formControlName="Password" placeholder="Password" name="Password" class="form-control" required>
-                <small class="text-danger" [class.d-none]="f.Password.valid ||f.Password.untouched">Password is required</small>
-              </div>
-            </div>
-
-          </div>
-        </form>
+  <div style="height:500px;">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="heading">Add User</h4>
+        <button type="button" class="close" aria-label="Close" (click)="ClosePopUp()">
+          <span aria-hidden="true">&times;</span>
+        </button>
 
       </div>
-
-
-      <div class="col-md-6">
-        <div class="card border-dark mb-5">
-          <div class="card-header" style="background-color:#337ab7;color:white;height:45px;">
-            <!--<h4 class="card-title pull-left" style="padding-top: 7.5px;">User Details</h4>-->
-            <b style="font-weight:bold;font-family:Arial;color:white">  User Details</b>
-            <div class="btn-xs pull-right">
-              <!--<button class="btn btn-danger" (click)="addUser()"> Add User</button>-->
-
-              <button (click)="addUser()" class="btn" style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height:12px;width:100px;font-size: 15px;background-color:#990033;color:white">Add User</button>
+      <form [formGroup]="userGroup" (ngSubmit)="onSubmit()" autocomplete="off">
+        <div class="modal-body">
 
 
 
-            </div>
+          <div class="form-group">
+            <label for="Username" class="label">Full Name:<b><span style="color:red;">*</span></b></label>
+            <input type="text" formControlName="Username" [ngClass]="{ 'is-invalid': submitted && f.Username.errors }" placeholder="User Name" [readonly]="isEditable" name="username" class="form-control">
+            <small class="text-danger" [class.d-none]="f.Username.valid ||f.Username.untouched">User Name is required</small>
+            <input type="hidden" formControlName="Userid" placeholder="User ID" name="Userid" class="form-control">
           </div>
-          <div class="card-body text-dark">
-            <table class="table table-sm table-stripped">
-              <thead>
-                <tr>
+          <div class="validation-error" *ngIf="f.Username.errors && submitted && f.Username.untouched" style="font-family:Arial;font-size:12px;color:red;line-height:normal">User Name is required</div>
 
-                  <th>User Name</th>
-                  <th>Email</th>
-                  <th>Password</th>
-                  <th></th>
-                  <th></th>
-
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of userService.userList">
-
-                  <td>{{user.Username}}</td>
-                  <td>{{user.EmailId}}</td>
-                  <td>{{user.Password}}</td>
-
-                  <td></td>
-                  <td>
-                    <a (click)="editUser(user)">
-                      <span class="glyphicon glyphicon-pencil"></span>
-                    </a>
-
-                    <!--<button class="text-danger" (click)="deleteUser(user.Userid)"> <i class="fa fa-trash-o"></i></button>
-  <button class="btn-success" (click)="editUser(user)" style="margin-left: 20px;"> <i class="fa fa-pencil"></i></button>-->
-                    &nbsp;&nbsp;
-                    <a (click)="deleteUser(user.Userid)">
-                      <span class="glyphicon glyphicon-trash" style="color:red"></span>
-                    </a>
-                  </td>
-                </tr>
-
-              </tbody>
-            </table>
+          <div class="form-group">
+            <label for="email" class="label">Email address:<b><span style="color:red">*</span></b></label>
+            <input type="email" [ngClass]="{ 'is-invalid': submitted && f.EmailId.errors }" formControlName="EmailId" placeholder="Email" name="EmailId" class="form-control">
+            <small class="text-danger" [class.d-none]="f.EmailId.valid || f.EmailId.untouched">Email is required</small>
           </div>
+
+          <div class="validation-error" *ngIf="f.EmailId.errors && submitted && f.EmailId.untouched" style="font-family:Arial;font-size:12px;color:red;line-height:normal">Email is required</div>
+          <div class="form-group">
+            <label for="MobileNo" class="label">Mobile No.:<b><span style="color:red">*</span></b></label>
+            <input type="text" maxlength="10" onkeypress="return event.charCode >= 48 && event.charCode <= 57" [ngClass]="{ 'is-invalid': submitted && f.MobileNo.errors }" autocomplete="off" formControlName="MobileNo" placeholder="Mobile No." name="Mobile No." class="form-control">
+            <small class="text-danger" [class.d-none]="f.MobileNo.valid || f.MobileNo.untouched">Mobile No. is required</small>
+          </div>
+          <div class="validation-error" *ngIf="f.MobileNo.errors && submitted && f.MobileNo.untouched" style="font-family:Arial;font-size:12px;color:red;line-height:normal">Mobile No. is required</div>
+
+          <!--<div class="form-group">
+            <label for="Password" class="label">Password:<b><span style="color:red">*</span></b></label>
+            <input type="password" [ngClass]="{ 'is-invalid': submitted && f.Password.errors }" autocomplete="new-password" formControlName="Password" placeholder="Password" name="Password" class="form-control" required>
+            <small class="text-danger" [class.d-none]="f.Password.valid ||f.Password.untouched">Password is required</small>
+          </div>
+          <div class="validation-error" *ngIf="f.Password.errors && submitted && f.Password.untouched" style="font-family:Arial;font-size:12px;color:red;line-height:normal">Password is required</div>-->
+
+
 
         </div>
+
+        <div class="modal-footer">
+
+          <button class="btn btn-success" style="text-align:center;border-radius: 40px;font-family:Raleway-SemiBold; line-height:12px;width:100px;font-size:14px;">Save</button>
+
+        </div>
+
+      </form>
+    </ng-template>
+  </div>
+
+  <br />
+
+
+  <div class="col-md-10">
+    <div class="card mb-5" style="border-color:#17a2b8;">
+      <div class="card-header" style="background-color:#0070ad">
+        <b class="heading" style="color:white">  User Details</b>
+        <div class="btn-xs pull-right">
+          <button (click)="openPopUp(content)" class="btn" style="text-align:center;border-radius: 40px;font-family:sans-serif; line-height:12px;width:100px;font-size:11px;background-color:azure;color:black">Add User</button>
+        </div>
+      </div>
+      <div class="card-body text-dark">
+        <table class="table table-striped table-hover">
+          <thead style="background-color:azure">
+            <tr>
+              <th class="tableheading">Edit/Delete</th>
+              <th class="tableheading">User Name</th>
+              <th class="tableheading">Email</th>
+              <th class="tableheading">Mobile No.</th>
+              <th></th>
+              <!--<th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>-->
+            </tr>
+          </thead>
+          <tbody style="background-color:azure">
+            <tr style="cursor:pointer" *ngFor="let user of userService.userList|paginate:config">
+              <td class="tablelabel">
+                <a (click)="editUser(user,content)">
+                  <i class="fas fa-pencil-alt"></i>
+                </a>
+
+
+                &nbsp;&nbsp;
+                <a (click)="deleteUser(user.Userid)">
+
+                  <i class="fas fa-trash-alt" style="color:red"></i>
+                </a>
+              </td>
+              <td class="tablelabel">{{user.Username}}</td>
+              <td class="tablelabel" >{{user.EmailId}}</td>
+              <td class="tablelabel" >{{user.MobileNo}}</td>
+              <td></td>
+              <!--<td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>-->
+            </tr>
+
+          </tbody>
+        </table>
+        <footer style="text-align:center">
+          <pagination-controls (pageChange)="pageChangeMethod($event)" *ngIf="(userService.userList)?.length > 0"></pagination-controls>
+
+        </footer>
+
+
       </div>
 
     </div>
   </div>
+  <div class="col-md-2"></div>
 </div>
 
 
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

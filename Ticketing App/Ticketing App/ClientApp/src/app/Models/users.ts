@@ -8,5 +8,5 @@ export class Users {
   CreatedDate: Date;
   ModifiedBy: string;
   ModifiedDate: Date;
-
+  MobileNo: string;
 }

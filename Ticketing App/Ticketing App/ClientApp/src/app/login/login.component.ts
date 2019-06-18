@@ -32,9 +32,11 @@ export class LoginComponent implements OnInit {
 
 
   checkusernameandpassword(uname: string, pwd: string) {
-    console.warn(this.SelectedUser[0].EmailId);
+    //console.warn(this.SelectedUser[0].EmailId);
     if ((uname == this.SelectedUser[0].EmailId) && (pwd == this.SelectedUser[0].Password)) {
       localStorage.setItem('username', this.SelectedUser[0].Username);
+      localStorage.setItem('email', this.SelectedUser[0].EmailId);
+      
       this.Conditionhide = true;
       return true;
     }
@@ -47,8 +49,8 @@ export class LoginComponent implements OnInit {
 
 
   OnSubmit(userName, password) {
-    console.log(userName)
-    console.log(password)
+    //console.log(userName)
+    //console.log(password)
     let Username = userName.trim();
     let Password = password.trim();
 
@@ -61,8 +63,9 @@ export class LoginComponent implements OnInit {
     this.loginService.getAuthenticatedUser(Username, Password)
       .subscribe(res => {
         this.SelectedUser = res;
-
-        if (this.SelectedUser.length == 0) {
+        this.loginService.loggedInUser = this.SelectedUser;
+      
+        if (this.SelectedUser.length ==0) {
 
           this.Conditionhide = false;
           setTimeout(function () {

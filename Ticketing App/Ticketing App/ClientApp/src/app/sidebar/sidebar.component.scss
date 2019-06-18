@@ -1,4 +1,73 @@
 
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family:'Times New Roman', Times, serif;
+  }
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 22px;
+  color: black;
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
+.profile {
+  margin: 20px 0;
+}
+
+/* Profile sidebar */
+.profile-sidebar {
+  padding: 20px 0 10px 0;
+  background: #fff;
+}
+
+.profile-userpic img {
+  float: none;
+  margin: 0 auto;
+  width: 50%;
+  height: 50%;
+  -webkit-border-radius: 50% !important;
+  -moz-border-radius: 50% !important;
+  border-radius: 50% !important;
+}
+
+.profile-usertitle {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.profile-usertitle-name {
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 7px;
+}
+
+
+
 
 .user-status
 {
@@ -15,21 +84,28 @@
   position: fixed;
   width: 15%;
   height: 100%;
-  background-color: #adebeb;
+  background-color: #0070ad;
 }
 
 #sidebar li {
-  color: black;
-  font-size: 20px;
+  color: white;
+ font-size:20px;
   font-family:'Times New Roman', Times, serif;
   cursor: pointer;
-  padding: 30px;
-  border-bottom: 1px solid gray;
+  padding: 8px;
+  /*border-bottom: 1px solid gray;*/
   text-align: center;
+  /*height:50px;*/
+  align-items:center;
 }
 
-li{
-  height:2px;
+li:hover {
+  position: relative;
+  border-radius: 12px;
+  background-color:skyblue;
+}
+ul {
+  float: none;
 }
 
 .toggle-btn{
@@ -37,16 +113,10 @@ li{
   left:105%;
   top:50px;
 }
-/*.toggle-btn span {
-  display: block;
-  color: black;
-  width: 30px;
-  height: 5px;
-  margin: 3px;
-}*/
-
-/*#sidebar.active{
-  left:0%;
-}*/
+li {
+  float: none;
+  font-size: 15px;
+  margin: 6px;
+}
 
 

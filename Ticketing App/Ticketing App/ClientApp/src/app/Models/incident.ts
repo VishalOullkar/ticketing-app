@@ -23,5 +23,7 @@ export class Incident {
   IncidentId: Guid;
   FileName: string;
   FilePath: string;
+  MobileNo: string;
+  Emailid: string;
 
 }

@@ -6,6 +6,7 @@ import { Guid } from 'guid-typescript';
 import { RaiseTicketService } from '../Shared/raise-ticket.service';
 
 import { HttpRequest, HttpClient } from '@angular/common/http';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 
 @Component({
@@ -16,79 +17,88 @@ import { HttpRequest, HttpClient } from '@angular/common/http';
 export class RaiseTicketComponent implements OnInit {
 
   submitted = false;
+  dropdownsubmitted = false;
   NewIncidentId: Guid;
-  constructor(private raiseTicketService: RaiseTicketService,
-    private fb: FormBuilder, private datePipe: DatePipe, private toastrService: ToastrService, private http: HttpClient) { }
+  emailid: any;
+  name: any;
+  templink: any;
+  constructor(private raiseTicketService: RaiseTicketService, private route: ActivatedRoute,
+    private fb: FormBuilder,private router:Router, private datePipe: DatePipe, private toastrService: ToastrService, private http: HttpClient) { }
   IncidentCode: string;
   ngOnInit() {
 
-    //this.raiseTicketService.getincidentDetails().subscribe(data => this.raiseTicketService.IncidentList = data);
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      this.emailid = params.get('id');
+      this.name = params.get('name');
+
+      this.raiseTicketService.emailid = this.emailid;
+      this.raiseTicketService.name = this.name;
+      this.templink = 'http://localhost:59090/raiseTicket/' + this.emailid + '/' + name
+
+        
+    });
+    
     this.raiseTicketService.getNextIncidentId().subscribe(data => this.raiseTicketService.IncidentList = data);
-    console.warn(this.raiseTicketService.IncidentList);
-    //    console.warn(this.raiseTicketService.SelectedIncident.IncidentCode);
-
-
-    //this.IncidentCode = this.raiseTicketService.SelectedIncident.IncidentId;
-
-  }
-
-  onSubmit() {
-    this.submitted = true;
-    // stop here if form is invalid
-
-    if (this.raiseTicketGroup.invalid) {
-      return;
     }
-    if (this.raiseTicketGroup.value.IncidentId == null) {
-      this.NewIncidentId = Guid.create();
-      this.raiseTicketGroup.value.IncidentId = this.NewIncidentId.toJSON;
-      this.raiseTicketService.postIncidentDetails(this.raiseTicketGroup.value).subscribe(
-        data => {
-          this.raiseTicketGroup.reset();
-          this.raiseTicketService.getNextIncidentId().subscribe(data => this.raiseTicketService.IncidentList = data);
-          this.toastrService.success('Submitted successfully', 'Success');
 
 
-        }
-      );
-    }
-    else {
-      this.raiseTicketService.putIncidentDetails(this.raiseTicketGroup.value.IncidentId, this.raiseTicketGroup.value).subscribe(
-        data => {
-          this.raiseTicketGroup.reset();
-          this.raiseTicketService.getNextIncidentId().subscribe(data => this.raiseTicketService.IncidentList = data);
-          this.toastrService.success('Updated successfully', 'Success');
-        }
-      );
-    }
-  }
 
   get fc() { return this.raiseTicketGroup.controls }
 
   onSave(files) {
 
-    this.raiseTicketService.Postraisticket(files, this.raiseTicketGroup.value);
-    this.raiseTicketGroup.reset();
-    this.toastrService.success('Submitted successfully', 'Success');
+
+    this.submitted = true;
+    this.dropdownsubmitted = true;
+
+    if (this.raiseTicketGroup.get('Priority').value =='--Select--') {
+      this.dropdownsubmitted = true;
+
+    } else {
+      this.dropdownsubmitted = false;
+
+    }
+    if (this.raiseTicketGroup.invalid) {
+      this.submitted = true;
+      return;
+    
+    }
+    else {
+      this.submitted = false;
+  
+      this.raiseTicketGroup.value.Status = 'outstanding'
+      this.raiseTicketGroup.value.IncidentId = this.IncidentCode;
+      this.raiseTicketGroup.value.RaisedByName = this.raiseTicketService.name;
+      this.raiseTicketGroup.value.Emailid = this.raiseTicketService.emailid;
+      this.raiseTicketService.Postraisticket(files, this.raiseTicketGroup.value);
+      this.raiseTicketGroup.reset();
+      this.toastrService.success('Submitted successfully', 'Success');
+      this.router.navigate(['/raisedTicketList'])
+    }
+
 
   }
 
-
+  callType(t:any) {
+    if (t != '--Select--') {
+      this.dropdownsubmitted = false;
+    }
+  }
 
   raiseTicketGroup = this.fb.group({
       IncidentCode: [null],
       Category: ['', Validators.required],
-      Priority: ['', Validators.required],
+      Priority: ['--Select--', Validators.required],
       ProblemDescription: ['', Validators.required],
       RaisedDateTime: this.datePipe.transform(Date.now(), 'dd-MMM-yyyy'),
-    RaisedBy: ['',Validators.required],
+      RaisedBy: [''],
       ResolveDescription: [''],
       ResolvedDateTime: [''],
       ResolvedBy: [''],
       ResponseDescription: [''],
       ResponseDateTime: [''],
       ResponseBy: [''],
-      Status: ['', Validators.required],
+      Status: [''],
       RaisedByName: [''],
       ModuleName: ['', Validators.required],
       Link: [''],
@@ -96,7 +106,10 @@ export class RaiseTicketComponent implements OnInit {
       ConfirmDateTime: [''],
       IncidentId: null,
       FileName: [''],
-      FilePath: ['']
+    FilePath: [''],
+    Emailid:[''],
+    MobileNo:['']
+
     });
 
 

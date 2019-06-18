@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 
 namespace Ticketing_App.Models
 {
+    [Authorize]
     public partial class Supporter
     {
         public string SupporterId { get; set; }

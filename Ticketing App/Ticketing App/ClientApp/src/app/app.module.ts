@@ -1,8 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpModule} from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule } from "@angular/forms";
@@ -12,17 +12,13 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxSmartModalModule } from 'ngx-smart-modal';
 import { BsDropdownModule } from 'ngx-bootstrap';
+import { TokenInterceptorService } from './token-interceptor.service';
 
 
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { AppRoutingModule, routingComponets } from './app-routing.module';
-import { RaiseTicketService } from './Shared/raise-ticket.service';
-import { LoginComponent } from './login/login.component';
-import { EditRaisedTicketComponent } from './raised-ticket-list/edit-raised-ticket/edit-raised-ticket.component';
-import { IncidentSupportComponent } from './incident-support/incident-support.component';
-import { IncidentSupportModelComponent } from './incident-support-model/incident-support-model.component';
 import { RaisedTicketListPipe } from './Shared/raised-ticket-list.pipe';
 import { SearchIncidentsPipe } from './Shared/search-incidents.pipe';
 import { UserComponent } from './master-user/user/user.component';
@@ -33,6 +29,7 @@ import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { GlobalErrorHandler } from './Shared/global-error-handler.service';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true
 };
@@ -41,14 +38,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 @NgModule({
   declarations: [
    
-    AppComponent, RaisedTicketListPipe, SearchIncidentsPipe,
-    NavMenuComponent, routingComponets,
-    LoginComponent, EditRaisedTicketComponent,
-    IncidentSupportComponent, IncidentSupportModelComponent,
-    RaisedTicketListPipe,
+    AppComponent, RaisedTicketListPipe,
+    routingComponets,RaisedTicketListPipe,
     SearchIncidentsPipe,
-    UserComponent,
-    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -65,10 +57,21 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   ],
  // providers: [DatePipe, AuthGuard],
 
-  providers: [{
-    provide: PERFECT_SCROLLBAR_CONFIG,
+  providers: [
+    {
+      provide: PERFECT_SCROLLBAR_CONFIG,
     useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-  }, DatePipe, AuthGuard],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi:true
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler
+    },
+    DatePipe, AuthGuard],
 
 
   bootstrap: [AppComponent]

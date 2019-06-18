@@ -8,6 +8,7 @@ import { Router, ParamMap, ActivatedRoute  } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Console } from '@angular/core/src/console';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-raised-ticket',
@@ -16,13 +17,24 @@ import { Console } from '@angular/core/src/console';
 })
 export class EditRaisedTicketComponent implements OnInit {
 
-  constructor(private raiseTicketService: RaiseTicketService, private fb: FormBuilder,
-    private datePipe: DatePipe,private route:ActivatedRoute) { }
+ constructor(private raiseTicketService: RaiseTicketService, private fb: FormBuilder,
+   private datePipe: DatePipe, private route: ActivatedRoute, private toastrService: ToastrService) { }
 
-  IncidentId: any;
+ IncidentId: any;
  IncidentModel: Incident;
+  emailid: string;
+  name: string;
 
+  ConvGroup = this.fb.group({
+    ResolveDescription: [''],
+    ResponseDescription: [''],
+    comment: [''],
+    Status: ['']
 
+  });
+  get f() {
+    return this.ConvGroup.controls;
+  }
   reset()
   {
     this.IncidentModel =
@@ -47,73 +59,64 @@ export class EditRaisedTicketComponent implements OnInit {
       ConfirmDateTime: null,
       IncidentId: null,
       FileName: '',
-      FilePath: ''
-
+      FilePath: '',
+      MobileNo: null,
+      Emailid: ''
       }
   }
+  updateConversation() {
+    this.ConvGroup.value.IncidentId = this.IncidentModel.IncidentId;
 
+    this.ConvGroup.value.commentedBy = this.raiseTicketService.name;
+ 
+    this.ConvGroup.value.IncidentId = this.IncidentModel.IncidentId;
+    //  this.ConvGroup.value.Status = this.IncidentModel.Status;
+    this.ConvGroup.value.IncidentCode = this.IncidentModel.IncidentCode;
+
+    this.raiseTicketService.postIncidentConversation(this.ConvGroup.value)
+      .subscribe(data => {
+        this.raiseTicketService.getincidentConversationList(this.IncidentId)
+          .subscribe(data => this.raiseTicketService.IncidentConvList = data);
+      });
+    this.toastrService.warning('Updated Successfully');
+    this.ConvGroup.reset();
+  }
 
   ngOnInit() {
     this.reset();
-    let id1 = this.route.snapshot.paramMap.get('id');
+    let id1 = this.route.snapshot.paramMap.get('Incidentid');
     let id2;
     this.route.paramMap.subscribe((params: ParamMap) => {
-       id2 = params.get('id');
-   //  console.warn(id2);
+      this.IncidentId = params.get('Incidentid');
+      console.log(this.IncidentId);
     });
 
-     this.raiseTicketService.getIncidentDetailsById(id2)
-       // .subscribe(data => this.IncidentModel === data);
-    //   .subscribe(x => console.log(x));
-       .subscribe(res => {
-         this.IncidentModel = res;
-     //    console.log(this.IncidentModel);
-       })
-    //console.warn(this.IncidentModel);
+    this.raiseTicketService.getIncidentDetailsById(this.IncidentId)
 
-   // this.IncidentModel = this.raiseTicketService.SelectedIncident
-    //console.warn(this.IncidentModel);
+      .subscribe(res => {
+        this.IncidentModel = res;
+        console.log(id2);
+      })
 
+    this.raiseTicketService.getincidentConversationList(this.IncidentId)
+      .subscribe(data => this.raiseTicketService.IncidentConvList = data);
 
-    //this.IncidentId = this.raiseTicketService.incidentId;
-    //this.IncidentModel = this.raiseTicketService.SelectedIncident;
-    //this.getSelectedIncident(this.IncidentId);
-   // console.warn(this.IncidentModel);
-
-    //this.raiseTicketGroup.patchValue(this.IncidentModel);
+    this.raiseTicketService.GetDocumentDetails(this.IncidentId)
+      .subscribe(data => this.raiseTicketService.IncidentDocumentList = data);
   }
 
-  //getSelectedIncident(IncidentId:any)
-  //{
-  //  this.raiseTicketService.getIncidentDetailsById(IncidentId).subscribe(data => this.raiseTicketService.SelectedIncident = data);
-  //  //this.IncidentModel = this.raiseTicketService.SelectedIncident;
-  //  //console.log(this.IncidentModel);
-  //  //this.raiseTicketGroup.patchValue(this.IncidentModel);
-  //}
+  deleteUser(Documentid: any) {
+    if (confirm('Are you sure') == true) {
+      //let emailid = localStorage.getItem('email');
+      //this.userGroup.value.ModifiedBy = emailid;
+      this.raiseTicketService.DeleteDocumentDetails(Documentid, this.IncidentId)
+        .subscribe(
+          data =>
+            this.raiseTicketService.IncidentDocumentList = data
 
-  //raiseTicketGroup = this.fb.group(
-  //  {
-  //    IncidentCode: '',
-  //    Category: ['', Validators.required],
-  //    Priority: ['', Validators.required],
-  //    ProblemDescription: ['', Validators.required],
-  //    RaisedDateTime: this.datePipe.transform(Date.now(), 'dd-MMM-yyyy'),
-  //    RaisedBy: [''],
-  //    ResolveDescription: [''],
-  //    ResolvedDateTime: null,
-  //    ResolvedBy: [''],
-  //    ResponseDescription: [''],
-  //    ResponseDateTime: null,
-  //    ResponseBy: [''],
-  //    Status: ['', Validators.required],
-  //    RaisedByName: [''],
-  //    ModuleName: ['', Validators.required],
-  //    Link: [''],
-  //    ConfirmBy: [''],
-  //    ConfirmDateTime: null,
-  //    IncidentId: null,
-  //    FileName: [''],
-  //    FilePath: ['']
-  //  });
+        );
+      this.toastrService.warning('Deleted successfully');
+    }
+  }
 
 }

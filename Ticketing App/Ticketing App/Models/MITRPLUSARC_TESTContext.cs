@@ -15,18 +15,19 @@ namespace Ticketing_App.Models
         {
         }
 
-        public virtual DbSet<Incident> Incident { get; set; }
+        public virtual DbSet<IncidentDocuments> IncidentDocuments { get; set; }
         public virtual DbSet<IncidentConversation> IncidentConversation { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Incident> Incident { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Data Source=45.114.245.80;Initial Catalog=MITRPLUSARC_TEST;Persist Security Info=True;User ID=MITRAdmin;Password=MITRAdmin@123");
-            }
-        }
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+//                optionsBuilder.UseSqlServer("Data Source=45.114.245.80;Initial Catalog=MITRPLUSARC_TEST;Persist Security Info=True;User ID=MITRAdmin;Password=MITRAdmin@123");
+//            }
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -73,21 +74,11 @@ namespace Ticketing_App.Models
                     .HasColumnName("createdDate")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.IncidentCode)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
 
-                entity.Property(e => e.RaisedBy)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
 
-                entity.Property(e => e.ResolvedBy)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
 
-                entity.Property(e => e.ResponseBy)
-                    .HasMaxLength(30)
-                    .IsUnicode(false);
+
+
 
                 entity.Property(e => e.Status)
                     .HasMaxLength(30)
@@ -101,7 +92,8 @@ namespace Ticketing_App.Models
 
             modelBuilder.Entity<Users>(entity =>
             {
-                entity.HasKey(e => e.Userid);
+                //entity.HasKey(e => e.Userid);
+                entity.HasKey(e => e.EmailId);
 
                 entity.ToTable("users");
 
@@ -138,6 +130,18 @@ namespace Ticketing_App.Models
                     .HasColumnName("username")
                     .HasMaxLength(30)
                     .IsUnicode(false);
+            });
+            modelBuilder.Entity<IncidentDocuments>(entity =>
+            {
+                entity.HasKey(e => e.DocumentId);
+
+                entity.Property(e => e.DocumentId).ValueGeneratedNever();
+
+                entity.Property(e => e.CreateDate)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.FileName).HasMaxLength(550);
             });
         }
     }

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+declare const myMethod: any;
+declare const popUp: any;
 
 @Component({
   selector: 'app-nav-menu',
@@ -19,5 +21,15 @@ export class NavMenuComponent {
   logout()
   {
     localStorage.clear();
+  }
+
+  onClick() {
+    popUp();
+  }
+
+
+  ngOnInit() {
+   // myMethod();
+   // load();
   }
 }

@@ -7,6 +7,8 @@ import { map, retry, catchError } from 'rxjs/operators';
 import { Guid } from 'guid-typescript';
 import { Incidentconversation } from '../Models/incidentconversation';
 import { debug } from 'util';
+import { Employee } from '../Models/employee';
+import { IncidentDocuments } from '../Models/incident-documents';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -23,31 +25,42 @@ export class RaiseTicketService {
   public IncidentConvList: Incidentconversation[];
   public SelectedIncident: Incident;
   public incidentId: Guid;
+  public Email: string;
+  public EmployeeList: Employee[];
   Raisedate:any;
-
+  emailid: any;
+  name: any;
+  URL: string = "http://localhost:59090/";
+  public IncidentDocumentList: IncidentDocuments[];
   constructor(private httpClient: HttpClient, private http: Http) {
    
   }
 
 
-
-
+  
   getincidentId() {
     data => this.incidentId = data;
   }
 
+
+
   getincidentList(): Observable<Incident[]> {
-    return this.httpClient.get<Incident[]>('api/Incidents/GetIncidents');
+    return this.httpClient.get<Incident[]>(this.URL+'api/Incidents/GetIncidents');
   }
+  GetUserDetailsByEmailId(EmailId: any): Observable<[Incident]> {
+    return this.httpClient.get<[Incident]>(this.URL+'api/Incidents/GetIncidentByEmailId/' + EmailId);
+  }
+
+  
   getincidentConversationList(Id:Guid): Observable<Incidentconversation[]> {
-    return this.httpClient.get<Incidentconversation[]>('api/IncidentConversations/GetConversationListById/'+Id);
+    return this.httpClient.get<Incidentconversation[]>(this.URL+'api/IncidentConversations/GetConversationListById/'+Id);
   }
   getNextIncidentId(): Observable<Incident[]> {
-    return this.httpClient.get<Incident[]>('api/Incidents/GetNextIncidentId');
+    return this.httpClient.get<Incident[]>(this.URL+'api/Incidents/GetNextIncidentId');
   }
 
   getIncidentDetailsById(Id: Guid): Observable<Incident> {
-    return this.httpClient.get<Incident>('api/Incidents/GetIncidentById/'+Id);
+    return this.httpClient.get<Incident>(this.URL+'api/Incidents/GetIncidentById/'+Id);
   }
 
   
@@ -57,7 +70,7 @@ export class RaiseTicketService {
     var body = JSON.stringify(IncidentModel);
     var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
     var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
-    return this.http.post('api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json)) 
+    return this.http.post(this.URL+'api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json)) 
   }
 
   postIncidentDetails(IncidentModel: Incident) {
@@ -65,7 +78,7 @@ export class RaiseTicketService {
     var body = JSON.stringify(IncidentModel);
     var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
     var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
-   return this.http.post('api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json));
+    return this.http.post(this.URL+'api/Incidents/PostIncidentStatus', body, requestOptions).pipe(map(res => res.json));
   
   }
   postIncidentConversation(conversationtModel: Incidentconversation) { 
@@ -73,28 +86,31 @@ export class RaiseTicketService {
     var body = JSON.stringify(conversationtModel);
     var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
     var requestOptions = new RequestOptions({ method: RequestMethod.Post, headers: hearderOptions });
-    return this.http.post('api/IncidentConversations/PostIncidentConversation', body, requestOptions).pipe(map(res => res.json));
+    return this.http.post(this.URL+'api/IncidentConversations/PostIncidentConversation', body, requestOptions).pipe(map(res => res.json));
   
   }
 
 
-  Postraisticket(files, raisdata: Incident) {
+  Postraisticket(files, raisedata: Incident) {
     const formData = new FormData();
 
     for (let file of files) {
       formData.append(file.name, file);
     }
-    formData.append('ModuleName', raisdata.ModuleName);
-    formData.append('ProblemDescription', raisdata.ProblemDescription);
-    formData.append('Priority', raisdata.Priority);
-    this.Raisedate = raisdata.RaisedDateTime;
+    formData.append('ModuleName', raisedata.ModuleName);
+    formData.append('ProblemDescription', raisedata.ProblemDescription);
+    formData.append('Priority', raisedata.Priority);
+    this.Raisedate = raisedata.RaisedDateTime;
     formData.append('RaisedDateTime', this.Raisedate );
-    formData.append('RaisedBy', raisdata.RaisedBy);
-    formData.append('Status', raisdata.Status);
-    formData.append('Category', raisdata.Category);
+    formData.append('RaisedBy', raisedata.RaisedBy);
+    formData.append('Status', raisedata.Status);
+    formData.append('Category', raisedata.Category);
+    formData.append('Emailid', raisedata.Emailid);
+    formData.append('MobileNo', raisedata.MobileNo);
 
 
-    const uploadReq = new HttpRequest('POST', 'api/Incidents/upload', formData, {
+
+    const uploadReq = new HttpRequest('POST', this.URL+'api/Incidents/upload', formData, {
       reportProgress: true,
     });
     this.httpClient.request(uploadReq).subscribe();
@@ -109,9 +125,18 @@ export class RaiseTicketService {
     var body = JSON.stringify(IncidentModel);
     var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
     var requestOptions = new RequestOptions({ method: RequestMethod.Put, headers: hearderOptions });
-    return this.http.put('http://localhost:59090/api/Incidents/PutIncident' + id, body, requestOptions).pipe(map(res => res.json));
+    return this.http.put(this.URL+'api/Incidents/PutIncident' + id, body, requestOptions).pipe(map(res => res.json));
   }
   GetRaiseDetailsByStatus(Status:any): Observable<Incident[]> {
-    return this.httpClient.get<Incident[]>('api/Incidents/GetRaiseticketbystatus/' + Status);
+    return this.httpClient.get<Incident[]>(this.URL+'api/Incidents/GetRaiseticketbystatus/' + Status);
   }
+
+  GetDocumentDetails(IncidentId: Guid): Observable<IncidentDocuments[]> {
+    return this.httpClient.get<IncidentDocuments[]>(this.URL + 'api/Incidents/GetRaiseTicketDocuments/' + IncidentId);
+  }
+
+  DeleteDocumentDetails(Documentid: Guid, IncidentId: Guid): Observable<IncidentDocuments[]> {
+    return this.httpClient.delete<IncidentDocuments[]>(this.URL + 'api/Incidents/DeleteIncidentDocument/' + Documentid + '/' + IncidentId);
+  }
+
  }

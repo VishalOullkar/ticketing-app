@@ -11,16 +11,21 @@ import { UserComponent } from './master-user/user/user.component';
 import { AuthGuard } from './auth.guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { IncidentSupportModelComponent } from './incident-support-model/incident-support-model.component';
+import { RaiseTicketService } from './Shared/raise-ticket.service';
+import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { ErrorComponent } from './error/error.component';
 
 const routes: Routes = [
-  { path: 'sidebar', component: SidebarComponent },
-  { path: 'supportModel', component: IncidentSupportModelComponent }, 
+  { path: 'sidebar', component: SidebarComponent, canActivate: [AuthGuard]},
+  { path: 'supportModel', component: IncidentSupportModelComponent, canActivate: [AuthGuard] }, 
   { path: 'user', component: UserComponent, canActivate: [AuthGuard] }, 
-  { path: 'raiseTicket', component: RaiseTicketComponent }, 
+  { path: 'raiseTicket/:id/:name', component: RaiseTicketComponent }, 
   { path: 'incidentSupport', component: IncidentSupportComponent, canActivate: [AuthGuard]},
   { path: 'raisedTicketList', component: RaisedTicketListComponent },
   { path: 'editRaisedTicket', component: EditRaisedTicketComponent },
-  { path: '', component: LoginComponent, pathMatch: 'full' }
+  { path: '', component: LoginComponent, pathMatch: 'full' },
+  { path:'navmenu',component:NavMenuComponent},
+  { path:'errorMsg',component:ErrorComponent}
 
   ]
 
@@ -34,4 +39,6 @@ const routes: Routes = [
 
 export class AppRoutingModule { }
 
-export const routingComponets = [SidebarComponent,IncidentSupportComponent, EditRaisedTicketComponent, RaisedTicketListComponent, RaiseTicketComponent]
+export const routingComponets = [ErrorComponent,NavMenuComponent,SidebarComponent, IncidentSupportComponent, UserComponent,
+  EditRaisedTicketComponent, RaisedTicketListComponent, IncidentSupportModelComponent,
+  RaiseTicketComponent,LoginComponent]

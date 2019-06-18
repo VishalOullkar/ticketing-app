@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 
 namespace Ticketing_App.Models
 {
+    [Authorize]
     public partial class Incident
     {
         public Incident()
@@ -31,6 +33,8 @@ namespace Ticketing_App.Models
         public Guid IncidentId { get; set; }
         public string FileName { get; set; }
         public string FilePath { get; set; }
+        public string EmailId { get; set; }
+        public string MobileNo { get; set; }
 
         public ICollection<IncidentConversation> IncidentConversation { get; set; }
     }

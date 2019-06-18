@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace Ticketing_App.Controllers
 {
     [Route("api/IncidentConversations/")]
     [ApiController]
+    [EnableCors("EnableCORS")]
     public class IncidentConversationsController : ControllerBase
     {
         private readonly MITRPLUSARC_TESTContext _context;
@@ -53,7 +55,7 @@ namespace Ticketing_App.Controllers
             var conversationList = _context.IncidentConversation
                 .FromSql("spgetConversationList @p0", Id).ToList();
 
-            return conversationList.OrderBy(sl => sl.IncidentCode); ;
+            return conversationList.OrderBy(sl => sl.IncidentId); ;
         }
 
 
@@ -115,8 +117,8 @@ namespace Ticketing_App.Controllers
 
             // Guid id = convObj.Id;
             _context.Database
-            .ExecuteSqlCommand("sp_InsertUpdateIncidentConvarsion @p0,@p1,@p2,@p3,@p4,@p5,@p6",
-            convObj.IncidentCode, convObj.Status, convObj.commentedBy, convObj.ResolveDescription, convObj.ResponseDescription, "MITRPLUSARC_TEST", convObj.IncidentId);
+            .ExecuteSqlCommand("sp_InsertUpdateIncidentConvarsion @p0,@p1,@p2,@p3,@p4,@p5",
+            convObj.Status,convObj.commentedBy,convObj.comment,convObj.comment, "MITRPLUSARC_TEST", convObj.IncidentId);
 
             return CreatedAtAction("GetIncidentConversation", new { id = convObj.Id }, convObj);
         }

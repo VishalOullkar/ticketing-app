@@ -3,7 +3,7 @@ import { Http, RequestOptions, RequestMethod, Headers } from '@angular/http';
 import { HttpClient } from '@angular/common/http';
 import { Users } from '../Models/users';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+//import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -16,36 +16,27 @@ export class LoginService {
 
   public UserList: Users[];
   public SelectedUser: Users;
-  public isLoggedIn: boolean;
+  public loggedInUser: Users[];
 
+  public isLoggedIn: boolean;
+  URL: string = "http://localhost:59090/";
   testvariable: object = {val1:'123'}
 
 
 
   getUsersList(): Observable<Users[]> {
-    return this.httpClient.get<Users[]>('api/Users/GetUsers');
+    return this.httpClient.get<Users[]>(this.URL+'api/Users/GetUsers');
   }
-
-  //getAuthenticatedUser(EmailId:string,password): Observable<Users> {
-  //  return this.httpClient.get<Users>('api/Users/getAutheticateduser/' + EmailId + '/' + password);
-     
-  //  }
 
 
   IsLogin(EmailId: string, password): boolean
   {
-    return this.isLoggedIn= !!this.httpClient.get('api/Users/IsLoggedInUser/' + EmailId + '/' + password);
+    return this.isLoggedIn= !!this.httpClient.get(this.URL+'api/Users/IsLoggedInUser/' + EmailId + '/' + password);
   }
 
   getAuthenticatedUser(EmailId: string, password):Observable<Users[]> {
-    return this.httpClient.get<Users[]>('api/Users/getAutheticateduser/' + EmailId + '/' + password);
-      //.pipe(map(
-      //  data => {
-      //  this.SelectedUser = data
-      //    // console.log(this.SelectedUser );
-      //    return data;
-      //  }
-      //));
+    return this.httpClient.get<Users[]>(this.URL+'api/Users/getAutheticateduser/' + EmailId + '/' + password)
+      
 
   }
 
@@ -61,58 +52,8 @@ export class LoginService {
     }
   }
 
-
- 
-
-  //getAuthenticatedUser(Email: string, password: string) {
-  //  return this.http.post(`/users/authenticate`, { Email: Email, password: password })
-  //    .pipe(map(user => {
-  //      // login successful if there's a jwt token in the response
-  //      //if (user && user.token) {
-  //      //  // store user details and jwt token in local storage to keep user logged in between page refreshes
-  //      //  localStorage.setItem('currentUser', JSON.stringify(user));
-  //      //}
-
-  //      return user;
-  //    }));
-  //}
-
-  //getAuthenticatedUser(EmailId: string) {
-
-  ////  var body = JSON.stringify(IncidentModel);
-  //  var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
-  //  var requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: hearderOptions });
-  //  return this.http.get('api/Users/getAutheticateduser/' + EmailId, requestOptions).pipe(map(res => res.json));
-  //}
-
-
-
-
 }
 
-
- 
-
-  //getAuthenticatedUser(Email: string, password: string) {
-  //  return this.http.post(`/users/authenticate`, { Email: Email, password: password })
-  //    .pipe(map(user => {
-  //      // login successful if there's a jwt token in the response
-  //      //if (user && user.token) {
-  //      //  // store user details and jwt token in local storage to keep user logged in between page refreshes
-  //      //  localStorage.setItem('currentUser', JSON.stringify(user));
-  //      //}
-
-  //      return user;
-  //    }));
-  //}
-
-  //getAuthenticatedUser(EmailId: string) {
-
-  ////  var body = JSON.stringify(IncidentModel);
-  //  var hearderOptions = new Headers({ 'Content-Type': 'application/json' });
-  //  var requestOptions = new RequestOptions({ method: RequestMethod.Get, headers: hearderOptions });
-  //  return this.http.get('api/Users/getAutheticateduser/' + EmailId, requestOptions).pipe(map(res => res.json));
-  //}
 
 
 

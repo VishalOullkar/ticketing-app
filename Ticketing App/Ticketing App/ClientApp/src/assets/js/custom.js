@@ -8,3 +8,17 @@ function closeNav() {
   document.getElementById("mySidebar").style.width = "0";
   document.getElementById("main").style.marginLeft = "0";
 }
+function myMethod() {
+  alert(" calling custom javascript code");
+}
+
+//$(window).load(function () {
+//  $('#myModal').modal('show');
+//}); 
+
+function popUp() {
+  $(window).load(function () {
+    $('#myModal').modal('show');
+  }); 
+
+}

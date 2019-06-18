@@ -12,11 +12,13 @@ using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Cors;
 
 namespace Ticketing_App.Controllers
 {
     [Route("api/Incidents/")]
     [ApiController]
+    [EnableCors("EnableCORS")]
     public class IncidentsController : ControllerBase
     {
         private readonly MITRPLUSARC_TESTContext _context;
@@ -32,6 +34,29 @@ namespace Ticketing_App.Controllers
         public IEnumerable<Incident> GetIncident()
         {
             return _context.Incident.OrderBy(s => s.IncidentCode);
+        }
+
+        [Route("getusernameByEmailId/{EmailId}")]
+        [HttpGet]
+        public IEnumerable<Users> getusernameByEmailId(string EmailId)
+        {
+            var userid = _context.Users.FromSql("spgetIncidentByEmailId @p0", EmailId);
+
+          return  userid;
+
+        }
+
+
+
+        [Route("GetIncidentByEmailId/{EmailId}")]
+        [HttpGet]
+        public IEnumerable<Incident> GetIncidentByEmailId([FromRoute] string EmailId)
+        {
+
+            var raiseticketlist = _context.Incident.FromSql("spgetIncidentByEmailId @p0", EmailId).ToList();
+
+            return raiseticketlist.OrderBy(sl => sl.IncidentCode); ;
+
         }
         // GET: api/GetNextIncidentId
 
@@ -70,8 +95,8 @@ namespace Ticketing_App.Controllers
         public IEnumerable<Incident> GetRaiseticketbystatus([FromRoute] string Status)
         {
 
-            var raiseticketlist = _context.Incident.FromSql("sp_GetRaiseTicketDetails @p0,@p1",
-             "A0B0C0D0E00100001", Status).ToList();
+            var raiseticketlist = _context.Incident.FromSql("sp_GetRaiseTicketDetailsByStatus @p0",
+              Status).ToList();
 
             return raiseticketlist.OrderBy(sl => sl.IncidentCode); ;
 
@@ -125,12 +150,14 @@ namespace Ticketing_App.Controllers
             string Status = Request.Form["Status"];
             int filecount = Request.Form.Files.Count;
             string Category = Request.Form["Category"];
+            string Emailid = Request.Form["Emailid"];
+            string MobileNo = Request.Form["MobileNo"];
             Guid IncidentId = Guid.NewGuid();
             _context.Database
-            .ExecuteSqlCommand("sp_RegisterIncident @p0,@p1,@p2," +
-            "@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10",
+            .ExecuteSqlCommand("sp_RegisterIncident1 @p0,@p1,@p2," +
+            "@p3,@p4,@p5,@p6,@p7,@p8,@p9,@p10,@p11,@p12",
             Priority, ProblemDescription, RaisedBy, Status, "MITRPLUSARC_TEST", 
-            ModuleName, "", IncidentId,"","", Category);
+            ModuleName, "", IncidentId,"","", Category, Emailid,MobileNo);
 
 
             for (int i = 0; filecount > i; i++)
@@ -158,7 +185,7 @@ namespace Ticketing_App.Controllers
                 }
 
             }
-            return "hi";
+            return "Success";
         }
 
 
@@ -233,6 +260,31 @@ namespace Ticketing_App.Controllers
         private bool IncidentExists(Guid id)
         {
             return _context.Incident.Any(e => e.IncidentId == id);
+        }
+
+        [Route("GetRaiseTicketDocuments/{IncidentId}")]
+        [HttpGet]
+        public IEnumerable<IncidentDocuments> GetRaiseTicketDocuments([FromRoute] Guid IncidentId)
+        {
+            var IncidentDocuments = _context.IncidentDocuments.FromSql("SP_GetRaiseticketDocuments @p0",
+               IncidentId).ToList();
+
+            return IncidentDocuments;
+        }
+        [Route("DeleteIncidentDocument/{DocumentId}/{IncidentId}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteIncidentDocument([FromRoute] Guid DocumentId, [FromRoute] Guid IncidentId)
+        {
+            var Document = await _context.IncidentDocuments.FindAsync(DocumentId);
+            if (Document == null)
+            {
+                return NotFound();
+            }
+
+            _context.IncidentDocuments.Remove(Document);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction("GetRaiseTicketDocuments", new { id = IncidentId });
         }
     }
 }
