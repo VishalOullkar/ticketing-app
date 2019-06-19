@@ -1,7 +1,7 @@
 USE [MITRPLUSARC_TEST]
 GO
 
-/****** Object:  StoredProcedure [dbo].[getAuthenticatedUser]    Script Date: 5/21/2019 4:39:20 PM ******/
+/****** Object:  StoredProcedure [dbo].[getAuthenticatedUser]    Script Date: 6/19/2019 6:15:32 PM ******/
 SET ANSI_NULLS ON
 GO
 

@@ -1,7 +1,7 @@
 USE [MITRPLUSARC_TEST]
 GO
 
-/****** Object:  StoredProcedure [dbo].[sp_getNextIncidentcode1]    Script Date: 5/21/2019 4:41:26 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_getNextIncidentcode1]    Script Date: 6/19/2019 6:10:34 PM ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,7 @@ GO
 
 
 
-create procedure [dbo].[sp_getNextIncidentcode1]
+CREATE procedure [dbo].[sp_getNextIncidentcode1]
 
 as
 
@@ -33,7 +33,7 @@ SELECT @IncidentCode   = 'INC' + REPLICATE(0,5-LEN(@MaxID)) + CAST(@MaxID AS NVA
 SELECT  ''as Category,'' as Priority,'' as ProblemDescription,
 getdate() as RaisedDateTime,'' as RaisedBy,'' as ResolveDescription,getdate() as ResolvedDateTime,
 '' as ResolvedBy,'' as ResponseDescription,getdate() as ResponseDateTime,
-'' as ResponseBy,'' as Status,'' as RaisedByName,'' as ModuleName,'' as Link,
+'' as ResponseBy,'' as Status,'' as RaisedByName,'' as ModuleName,'' as Link,'' as EmailId,'' as MobileNo,
 '' as ConfirmBy,getdate() as ConfirmDateTime,
  NEWID() as IncidentId,'' as FileName,'' as FilePath, @IncidentCode as IncidentCode
 
